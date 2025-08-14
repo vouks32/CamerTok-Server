@@ -49,7 +49,7 @@ const updateCycle = async () => {
 
 let timetilNextMin = 60 - ((new Date()).getSeconds() % 60)
 setTimeout(() => {
-    console.log(" ---- regular update Start ---- ")
+    console.log(" ---- regular update Start ---- ");
   //  updateCycle();
    // interval = setInterval(updateCycle, 1000 * 60 * 10);
 }, timetilNextMin * 1000)
