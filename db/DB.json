@@ -302,5 +302,256 @@
       "status": "review"
     }
   },
-  "transactions": {}
+  "transactions": {},
+  "ShakuUsers": {
+    "jotsaange@gmail.com": {
+      "name": "Jotsa Voukeng Ange Rodolphe",
+      "email": "jotsaange@gmail.com",
+      "age": "21",
+      "mdp": "123456789",
+      "country": {
+        "name": {
+          "en": "Cameroon",
+          "da": "Cameroun",
+          "ru": "Камерун",
+          "pl": "Kamerun",
+          "ua": "Камерун",
+          "cz": "Kamerun",
+          "by": "Камерун",
+          "pt": "Camarões",
+          "es": "Camerún",
+          "ro": "Camerun",
+          "bg": "Камерун",
+          "de": "Kamerun",
+          "fr": "Cameroun",
+          "nl": "Kameroen",
+          "it": "Camerun",
+          "cn": "喀麦隆",
+          "zh": "喀麥隆",
+          "ee": "Kamerun",
+          "jp": "カメルーン",
+          "he": "קמרון",
+          "el": "Καμερούν",
+          "ar": "الكاميرون",
+          "tr": "Kamerun"
+        },
+        "dial_code": "+237",
+        "code": "CM",
+        "flag": "🇨🇲"
+      },
+      "completedSteps": true,
+      "kycCompleted": true,
+      "balance": 18650,
+      "gains": {
+        "total": 0,
+        "investments": [
+          {
+            "id": 0,
+            "name": "Or",
+            "amount": 15000,
+            "duration": 15,
+            "passedDays": 0,
+            "investedDate": 1755766898641,
+            "performance": 31.7
+          },
+          {
+            "id": 1,
+            "name": "Or",
+            "amount": 16350,
+            "duration": 60,
+            "passedDays": 0,
+            "investedDate": 1755767100550,
+            "performance": 31.7
+          }
+        ]
+      },
+      "createdAt": "2025-08-21T08:02:29.384Z",
+      "lastLogin": "2025-08-21T08:02:29.384Z",
+      "isFirstTime": true,
+      "lastUpdated": 1755778803998,
+      "lastConnected": 1755778803998,
+      "kycCompletedDate": 1755767060504
+    },
+    "jotsaange@gmail.co": {
+      "name": "Jotsa Voukeng Ange Rodolphe",
+      "email": "jotsaange@gmail.co",
+      "age": "19",
+      "mdp": "1234567891254",
+      "country": {
+        "name": {
+          "en": "Antarctica",
+          "da": "Antarktis",
+          "ru": "Антарктида",
+          "pl": "Antarktyda",
+          "ua": "Антарктида",
+          "cz": "Antarktida",
+          "by": "Антарктыда",
+          "pt": "Antarctica",
+          "es": "Antártida",
+          "ro": "Antarctica",
+          "bg": "Антарктида",
+          "de": "Antarktis",
+          "fr": "Antarctique",
+          "nl": "Antarctica",
+          "it": "Antartide",
+          "cn": "南极洲",
+          "zh": "南極洲",
+          "ee": "Antarktika",
+          "jp": "南極大陸",
+          "he": "אנטארקטיקה",
+          "el": "Ανταρκτική",
+          "ar": "القارة القطبية الجنوبية",
+          "tr": "Antarktika"
+        },
+        "dial_code": "+672",
+        "code": "AQ",
+        "flag": "🇦🇶"
+      },
+      "completedSteps": true,
+      "kycCompleted": false,
+      "balance": 14200,
+      "gains": {
+        "total": 0,
+        "investments": [
+          {
+            "id": 0,
+            "name": "Or",
+            "amount": 18500,
+            "duration": 7,
+            "passedDays": 0,
+            "investedDate": 1755767657652,
+            "performance": 31.7
+          },
+          {
+            "id": 1,
+            "name": "Or",
+            "amount": 20000,
+            "duration": 15,
+            "passedDays": 0,
+            "investedDate": 1755769446398,
+            "performance": 31.7
+          }
+        ]
+      },
+      "createdAt": "2025-08-21T09:13:41.209Z",
+      "lastLogin": "2025-08-21T09:13:41.209Z",
+      "isFirstTime": true,
+      "lastUpdated": 1755776135548,
+      "lastConnected": 1755776135548,
+      "transactions": [
+        {
+          "id": {
+            "id": "py_qtucp9j9inc0",
+            "status": "cancelled",
+            "is_processed": false,
+            "processed_at": null,
+            "amount": 100,
+            "currency": {
+              "name": "franc CFA (BCEAO)",
+              "symbol": "F CFA",
+              "code": "XOF",
+              "icon_url": "https://assets.cdn.moneroo.io/currencies/XOF.svg"
+            },
+            "amount_formatted": "100 F CFA",
+            "description": "lien test",
+            "return_url": "https://link-return.moneroo.io/plink_lrz11jp56fgf?paymentId=py_qtucp9j9inc0&paymentStatus=cancelled",
+            "environment": "live",
+            "initiated_at": "2025-08-21T09:59:19.000000Z",
+            "metadata": [],
+            "app": {
+              "id": "01K2ZNH4AEYV53AK0DYT025ZT2",
+              "name": "Feexpay",
+              "website_url": "https://kolabo-sepia.vercel.app/",
+              "icon_url": "https://unavatar.io/google/vercel.app?fallback=https://assets.cdn.moneroo.io/samples/business.svg",
+              "support": {
+                "email": "latotravelfr@gmail.com",
+                "phone": null
+              },
+              "created_at": "2025-08-18T22:41:49.000000Z",
+              "updated_at": "2025-08-21T06:49:15.000000Z",
+              "is_enabled": true
+            },
+            "customer": {
+              "id": "cus_xv55hom5032m",
+              "first_name": "Ange Rodolphe",
+              "last_name": "Jotsa Voukeng",
+              "email": "jotsaange@gmail.com",
+              "profile_url": "https://unavatar.io/gravatar/jotsaange@gmail.com?fallback=https%3A%2F%2Feu.ui-avatars.com%2Fapi%2F%3Fname%3DAnge%2BRodolphe%26background%3D0074fa%26color%3Dfff%26size%3D256%26rounded%3Dtrue%26bold%3Dtrue",
+              "created_at": "2025-08-19T13:03:57.000000Z",
+              "updated_at": "2025-08-21T09:59:19.000000Z"
+            },
+            "capture": null,
+            "link": {
+              "id": "plink_lrz11jp56fgf",
+              "title": "lien test",
+              "description": "<p>Un produit test pour voir les fonctionalités</p>",
+              "url": "https://pay.moneroo.io/plink_lrz11jp56fgf",
+              "cover_picture_url": null
+            },
+            "custom_fields_data": [],
+            "created_at": "2025-08-21T09:59:19.000000Z"
+          },
+          "paymentId": "py_qtucp9j9inc0",
+          "amount": 100,
+          "date": 1755775978286
+        },
+        {
+          "_transaction": {
+            "id": "py_qtucp9j9inc0",
+            "status": "cancelled",
+            "is_processed": false,
+            "processed_at": null,
+            "amount": 100,
+            "currency": {
+              "name": "franc CFA (BCEAO)",
+              "symbol": "F CFA",
+              "code": "XOF",
+              "icon_url": "https://assets.cdn.moneroo.io/currencies/XOF.svg"
+            },
+            "amount_formatted": "100 F CFA",
+            "description": "lien test",
+            "return_url": "https://link-return.moneroo.io/plink_lrz11jp56fgf?paymentId=py_qtucp9j9inc0&paymentStatus=cancelled",
+            "environment": "live",
+            "initiated_at": "2025-08-21T09:59:19.000000Z",
+            "metadata": [],
+            "app": {
+              "id": "01K2ZNH4AEYV53AK0DYT025ZT2",
+              "name": "Feexpay",
+              "website_url": "https://kolabo-sepia.vercel.app/",
+              "icon_url": "https://unavatar.io/google/vercel.app?fallback=https://assets.cdn.moneroo.io/samples/business.svg",
+              "support": {
+                "email": "latotravelfr@gmail.com",
+                "phone": null
+              },
+              "created_at": "2025-08-18T22:41:49.000000Z",
+              "updated_at": "2025-08-21T06:49:15.000000Z",
+              "is_enabled": true
+            },
+            "customer": {
+              "id": "cus_xv55hom5032m",
+              "first_name": "Ange Rodolphe",
+              "last_name": "Jotsa Voukeng",
+              "email": "jotsaange@gmail.com",
+              "profile_url": "https://unavatar.io/gravatar/jotsaange@gmail.com?fallback=https%3A%2F%2Feu.ui-avatars.com%2Fapi%2F%3Fname%3DAnge%2BRodolphe%26background%3De30026%26color%3Dfff%26size%3D256%26rounded%3Dtrue%26bold%3Dtrue",
+              "created_at": "2025-08-19T13:03:57.000000Z",
+              "updated_at": "2025-08-21T09:59:19.000000Z"
+            },
+            "capture": null,
+            "link": {
+              "id": "plink_lrz11jp56fgf",
+              "title": "lien test",
+              "description": "<p>Un produit test pour voir les fonctionalités</p>",
+              "url": "https://pay.moneroo.io/plink_lrz11jp56fgf",
+              "cover_picture_url": null
+            },
+            "custom_fields_data": [],
+            "created_at": "2025-08-21T09:59:19.000000Z"
+          },
+          "paymentId": "py_qtucp9j9inc0",
+          "amount": 100,
+          "date": 1755776135532
+        }
+      ]
+    }
+  }
 }

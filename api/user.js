@@ -442,6 +442,75 @@ api.get("/api/webhook", async (req, res) => {
 });
 
 
+/////////  ------------------------------------- SHAKU MINING ------------------------------------- ////////
+
+
+// Initialisation du compte
+api.post('/api/shaku/users', async (req, res) => {
+  try {
+    const player = req.body;
+    console.log("-------------");
+    console.log("Création du compte -- SHAKU --", player.email);
+
+    const playerData = {
+      ...player,
+      lastUpdated: Date.now(),
+      lastConnected: Date.now(),
+    };
+
+    await addDoc('ShakuUsers', player.email, playerData)
+    console.log("Création du compte -- SHAKU -- COMPLÉTÉ AVEC SUCCES");
+    res.status(201).json(playerData);
+  } catch (error) {
+    console.error('ERREUR création compte:', error);
+    res.status(500).json({ error: 'Échec création compte' });
+  }
+});
+
+// Mise à jour du compte
+api.put('/api/shaku/users', async (req, res) => {
+  try {
+    if (!req.body) return;
+    const { email } = req.body;
+    console.log('--------------')
+    console.log('updating -- SHAKU --', email)
+
+    const playerData = await updateDoc('ShakuUsers', email, { ...req.body.updates, lastUpdated: Date.now(), lastConnected: Date.now() })
+    //// FAIRE DES TRUCS ////
+
+    if(playerData)
+      console.log('updated -- SHAKU -- successfully')
+    res.json(playerData);
+  } catch (error) {
+    console.error('Erreur mise à jour compte --SHAKU --:', error);
+    res.status(500).json({ error: 'Échec mise à jour compte' });
+  }
+});
+
+// Récupération des données compte
+api.get('/api/shaku/users', async (req, res) => {
+  const { email } = req.query;
+  try {
+    console.log("-------------");
+    const playerDoc = email.includes('@all') ? await getDocs('ShakuUsers') : await getDoc('ShakuUsers', email);
+    console.log('récupération des informations -- SHAKU -- de', email);
+
+    if (!playerDoc) {
+      console.log('compte non trouvé', email);
+      return res.status(404).json({ error: 'compte non trouvé' });
+    }
+
+    if (!email.includes('@all'))
+      updateDoc('ShakuUsers', email, { lastConnected: Date.now() })
+
+    console.log('compte -- SHAKU -- trouvé', email);
+    res.json(playerDoc);
+  } catch (error) {
+    console.error('Erreur récupération compte -- SHAKU --:', email, error);
+    res.status(500).json({ error: 'Échec récupération compte' });
+  }
+});
+
 export { api, GetTiktokInfo, GetPostsStats, defineWebSocket }
 
 
