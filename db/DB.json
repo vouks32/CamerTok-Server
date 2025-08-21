@@ -54,6 +54,26 @@
         "token_type": "Bearer",
         "date": 1755125128
       }
+    },
+    "ambassiraambassira@gmail.com": {
+      "userType": "business",
+      "email": "ambassiraambassira@gmail.com",
+      "phone": "237123456789",
+      "password": "1234",
+      "username": "ambassira",
+      "companyName": "Ambassira Digital Marketing",
+      "createdAt": "2025-01-15T10:00:00.000Z",
+      "lastLogin": "2025-01-15T10:00:00.000Z",
+      "isFirstTime": true,
+      "campaigns": [],
+      "lastUpdated": 1755321600000,
+      "lastConnected": 1755739437276,
+      "lastTiktokUpdate": 1755321600000,
+      "bank": {
+        "solde": 50000,
+        "transactions": []
+      },
+      "id": "ambassiraambassira@gmail.com"
     }
   },
   "campaigns": {

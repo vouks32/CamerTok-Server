@@ -4,8 +4,8 @@ import { defineWebSocket, api, GetTiktokInfo } from "./api/user.js";
 import Tiktok from '@tobyg74/tiktok-api-dl'
 
 console.clear();
-api.listen(80, () => {
-    console.log(`Serveur joueur démarré sur le port 80`);
+api.listen(3001, () => {
+    console.log(`Serveur joueur démarré sur le port 3001`);
 });
 
 defineWebSocket();
