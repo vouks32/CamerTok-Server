@@ -2,7 +2,7 @@ import { Low } from 'lowdb'
 import { JSONFile } from 'lowdb/node'
 
 // Define the file where data will be saved
-const DBFile = new JSONFile('./db/DB.json')
+const DBFile = new JSONFile('../db/DB.json')
 const DB = new Low(DBFile, {})
 
 // Read data from file (or set defaults if file doesn't exist)
