@@ -5,6 +5,10 @@ node_modules/
 
 api/uploads
 
+db
+
+/db
+
 # Native
 *.orig.*
 *.jks

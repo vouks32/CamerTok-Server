@@ -363,14 +363,14 @@
       "kycCompleted": true,
       "balance": 18650,
       "gains": {
-        "total": 0,
+        "total": 33631.35,
         "investments": [
           {
             "id": 0,
             "name": "Or",
             "amount": 15000,
             "duration": 15,
-            "passedDays": 0,
+            "passedDays": 3,
             "investedDate": 1755766898641,
             "performance": 31.7
           },
@@ -379,7 +379,7 @@
             "name": "Or",
             "amount": 16350,
             "duration": 60,
-            "passedDays": 0,
+            "passedDays": 3,
             "investedDate": 1755767100550,
             "performance": 31.7
           }
@@ -388,8 +388,8 @@
       "createdAt": "2025-08-21T08:02:29.384Z",
       "lastLogin": "2025-08-21T08:02:29.384Z",
       "isFirstTime": true,
-      "lastUpdated": 1755778803998,
-      "lastConnected": 1755778803998,
+      "lastUpdated": 1756062387702,
+      "lastConnected": 1756062387702,
       "kycCompletedDate": 1755767060504
     },
     "jotsaange@gmail.co": {
@@ -457,7 +457,7 @@
       "lastLogin": "2025-08-21T09:13:41.209Z",
       "isFirstTime": true,
       "lastUpdated": 1755776135548,
-      "lastConnected": 1755776135548,
+      "lastConnected": 1756062414421,
       "transactions": [
         {
           "id": {
