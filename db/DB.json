@@ -1,60 +1,5 @@
 {
   "users": {
-    "jotsaange@gmail.com": {
-      "userType": "creator",
-      "email": "jotsaange@gmail.com",
-      "phone": "676073559",
-      "password": "1234",
-      "username": "vouks.san",
-      "tiktokUser": {
-        "user": {
-          "uid": "7090270909333013509",
-          "username": "vouks.san",
-          "nickname": "Dr. Vouks",
-          "avatarLarger": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=55475237&x-expires=1755097200&x-signature=w3QjceHasz%2Bo6BvojTsAY7OYg6I%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
-          "avatarThumb": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:100:100.jpeg?dr=14579&refresh_token=63c19170&x-expires=1755097200&x-signature=Xpp2nNq2qL44HdA0XX0wskswJfQ%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
-          "avatarMedium": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:720:720.jpeg?dr=14579&refresh_token=e1ccd39f&x-expires=1755097200&x-signature=d8z22ey7KwwDUA7zcE7NGdMnyy8%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
-          "signature": "『gV』\nje s'appelle vouks\npour collaboration 🫵👇\npeanutsxonr@gmail.com",
-          "verified": false,
-          "privateAccount": false,
-          "commerceUser": false,
-          "usernameModifyTime": 0,
-          "nicknameModifyTime": 1746563508,
-          "secUid": "MS4wLjABAAAAQZzjGLPdTiEgtD1TSY3FXPbSsAvYzWyyzkkZgFd_7E1oqnJNa46XeTe-FH89bfEH"
-        },
-        "stats": {
-          "followerCount": 31800,
-          "followingCount": 351,
-          "heartCount": 1200000,
-          "videoCount": 153,
-          "likeCount": 19500,
-          "friendCount": 128
-        }
-      },
-      "companyName": "Boi SARL",
-      "createdAt": "2025-08-03T08:47:06.498Z",
-      "lastLogin": "2025-08-03T08:47:06.498Z",
-      "isFirstTime": true,
-      "campaigns": [],
-      "lastUpdated": 1755125129977,
-      "lastTiktokUpdate": 1754214682100,
-      "lastConnected": 1755742493605,
-      "tiktokAuthCode": {
-        "code": "5A05OC6asGNiwsKaol7tNwny0T-aYLqHofSU90hsbiQNw4MUX2a3_-0sIs0JewIrIPvpy_wr7qfwMIx3nOPz-n3v9xJjMqaqGlIO5qZ4qz-FK6m9a4U7ltsF9ibk6dyadMyJuGB01AN9Ok98jeJNQjWDI6h--2xP0XT9VMsjpXVxE0EYyG_46ayI36G9xmGxrNzyudHrd0T4FWjbBs9jKQ*2!4596.va",
-        "scopes": "user.info.basic,video.list,user.info.profile,user.info.stats",
-        "state": "aop04iwsult--jotsaange@gmail.com"
-      },
-      "tiktokToken": {
-        "access_token": "act.FSHnAPppHjNstI9JEgnG8G3UQcNpqTZy2qnViWAjk1BogHww8CSkaHRJBnne!4572.va",
-        "expires_in": 86400,
-        "open_id": "-0009vAHFWvLRF3cYrHWCmgqUV4rvwP3qTc2",
-        "refresh_expires_in": 31536000,
-        "refresh_token": "rft.eCXpaIhoJfnZ1jnLzBdjXgyOVnfP8bmMRMwCXcds49aFMLLZgiY0nLT3MJLp!4578.va",
-        "scope": "user.info.basic,video.list,user.info.profile,user.info.stats",
-        "token_type": "Bearer",
-        "date": 1755125128
-      }
-    },
     "ambassiraambassira@gmail.com": {
       "userType": "business",
       "email": "ambassiraambassira@gmail.com",
@@ -74,11 +19,46 @@
         "transactions": []
       },
       "id": "ambassiraambassira@gmail.com"
+    },
+    "jotsaange@gmail.com": {
+      "userType": "creator",
+      "email": "jotsaange@gmail.com",
+      "phone": "676073559",
+      "password": "1234567890",
+      "username": "",
+      "tiktokUser": null,
+      "companyName": "",
+      "bank": {
+        "solde": 0,
+        "transactions": []
+      },
+      "createdAt": "2025-09-03T08:30:02.598Z",
+      "lastLogin": "2025-09-03T08:30:02.598Z",
+      "isFirstTime": true,
+      "campaigns": [],
+      "lastUpdated": 1756888208484,
+      "lastConnected": 1756975115006,
+      "lastTiktokUpdate": 1756888202033,
+      "tiktokAuthCode": {
+        "code": "qJ4oq0NPMfEi2oyFIH1B5D7FQF-SMIzQ0Mkpg6_mmXvZYuzhXNpcY3QZ7_ASE1M5M9fehGckEQs0PANONy-F_k_G2tX1DmnXVjEgemBop9ZFXQwXxyl0hf_KpVjOo-Ca5vBiRBxz9Ie9bogaw4X7iH8wSdf3DtqaaKwlXwctd0T1vIwi08DnUN76z-Lnl03bBF7yocXSDU4UzjsD_dHOyA*2!4563.va",
+        "scopes": "user.info.basic,video.list,user.info.profile,user.info.stats",
+        "state": "1qaxllhzu99--jotsaange@gmail.com"
+      },
+      "tiktokToken": {
+        "access_token": "act.4qBH0yck398gRRfEvkaC5yNS5JdJLDdYNzIPqQdLa1H9sVrpvzs6b39uhoyK!4557.va",
+        "expires_in": 86400,
+        "open_id": "-0009vAHFWvLRF3cYrHWCmgqUV4rvwP3qTc2",
+        "refresh_expires_in": 31536000,
+        "refresh_token": "rft.j1UIJPu05quVsPgJIMnZF6jHbFZBnhYWezu3LQzkucLHBWH3mdKUv3pBcgAR!4588.va",
+        "scope": "user.info.basic,video.list,user.info.profile,user.info.stats",
+        "token_type": "Bearer",
+        "date": 1756888209
+      }
     }
   },
   "campaigns": {
     "campaign-jotsaange@gmail.com-1754914878678": {
-      "id": "campaign-jotsaange@gmail.com-1754914878678",
+      "id": "1 - campaign-jotsaange@gmail.com-1754914878678",
       "campaignOwner": "jotsaange@gmail.com",
       "campaignInfo": {
         "title": "ne privez jamais quelqu'un d'espoir, c'est ",
@@ -315,11 +295,526 @@
         }
       },
       "evolution": {
+        "participatingCreators": [],
         "participantsVideos": [],
         "stats": []
       },
       "createdAt": 1754915417285,
       "status": "review"
+    },
+    "campaign-jotsaange@gmail.com-1754914878679": {
+      "id": "campaign-jotsaange@gmail.com-1754914878679",
+      "campaignOwner": "jotsaange@gmail.com",
+      "campaignInfo": {
+        "title": "2 - ne privez jamais quelqu'un d'espoir, c'est ",
+        "image": "Cover-jotsaange_gmail.com-1754914871614.jpeg",
+        "description": "ne privez jamais quelqu'un d'espoir, c'est peut-être tout ce qui lui reste. Yo yoy yo",
+        "startDate": 1754953200000,
+        "endDate": 1755644400000,
+        "documents": [
+          {
+            "name": "Cover-jotsaange_gmail.com-1754914871614.jpeg",
+            "serverName": "Cover-jotsaange_gmail.com-1754914871614.jpeg"
+          },
+          {
+            "name": "InVideo-jotsaange_gmail.com-1754914846620.mp4",
+            "size": 4807998,
+            "mimeType": "video/mp4",
+            "serverName": "InVideo-jotsaange_gmail.com-1754914846620.mp4"
+          },
+          {
+            "name": "Documents-0-jotsaange_gmail.com-1754914859570.pdf",
+            "size": 218434,
+            "mimeType": "application/pdf",
+            "serverName": "Documents-0-jotsaange_gmail.com-1754914859570.pdf"
+          }
+        ]
+      },
+      "campaignCreatorsAndBudget": {
+        "totalBudget": "30000",
+        "limitBudgetPerCreator": {
+          "state": false,
+          "min": 1,
+          "max": ""
+        },
+        "limitContentPerCreator": {
+          "state": false,
+          "min": 1,
+          "max": 5
+        },
+        "limitParticipatingCreator": {
+          "state": true,
+          "creators": [
+            {
+              "userType": "creator",
+              "email": "user01@gmail.com",
+              "phone": "676073559",
+              "password": "1234",
+              "username": "vouks.san2",
+              "tiktokUser": {
+                "user": {
+                  "uid": "7090270909333013509",
+                  "username": "vouks.san2",
+                  "nickname": "Dr. Vouks2",
+                  "avatarLarger": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=d80c1bd1&x-expires=1754380800&x-signature=KPJkp2LQ1IUEr1VNC7nc9AWnHOY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarThumb": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:100:100.jpeg?dr=14579&refresh_token=272eefaa&x-expires=1754380800&x-signature=Y7fWgZ9r0fd4YBtRmDp46%2FRc8%2FI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarMedium": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:720:720.jpeg?dr=14579&refresh_token=180ba3a4&x-expires=1754380800&x-signature=WzZ6OQ%2FJUT2jy0yyLF7i8k3MnqI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "signature": "『gV』\nje s'appelle vouks\npour collaboration 🫵👇\npeanutsxonr@gmail.com",
+                  "verified": false,
+                  "privateAccount": false,
+                  "commerceUser": false,
+                  "usernameModifyTime": 0,
+                  "nicknameModifyTime": 1746563508,
+                  "secUid": "MS4wLjABAAAAQZzjGLPdTiEgtD1TSY3FXPbSsAvYzWyyzkkZgFd_7E1oqnJNa46XeTe-FH89bfEH"
+                },
+                "stats": {
+                  "followerCount": 12500,
+                  "followingCount": 350,
+                  "heartCount": 1150000,
+                  "videoCount": 153,
+                  "likeCount": 19500,
+                  "friendCount": 128
+                }
+              },
+              "companyName": "",
+              "createdAt": "2025-08-03T08:47:06.498Z",
+              "lastLogin": "2025-08-03T08:47:06.498Z",
+              "isFirstTime": true,
+              "campaigns": [],
+              "lastUpdated": 1754210825759,
+              "id": "user01@gmail.com"
+            },
+            {
+              "userType": "creator",
+              "email": "jotsaange@gmail.com",
+              "phone": "676073559",
+              "password": "1234",
+              "username": "vouks.san",
+              "tiktokUser": {
+                "user": {
+                  "uid": "7090270909333013509",
+                  "username": "vouks.san",
+                  "nickname": "Dr. Vouks",
+                  "avatarLarger": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=d80c1bd1&x-expires=1754380800&x-signature=KPJkp2LQ1IUEr1VNC7nc9AWnHOY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarThumb": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:100:100.jpeg?dr=14579&refresh_token=272eefaa&x-expires=1754380800&x-signature=Y7fWgZ9r0fd4YBtRmDp46%2FRc8%2FI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarMedium": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:720:720.jpeg?dr=14579&refresh_token=180ba3a4&x-expires=1754380800&x-signature=WzZ6OQ%2FJUT2jy0yyLF7i8k3MnqI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "signature": "『gV』\nje s'appelle vouks\npour collaboration 🫵👇\npeanutsxonr@gmail.com",
+                  "verified": false,
+                  "privateAccount": false,
+                  "commerceUser": false,
+                  "usernameModifyTime": 0,
+                  "nicknameModifyTime": 1746563508,
+                  "secUid": "MS4wLjABAAAAQZzjGLPdTiEgtD1TSY3FXPbSsAvYzWyyzkkZgFd_7E1oqnJNa46XeTe-FH89bfEH"
+                },
+                "stats": {
+                  "followerCount": 31500,
+                  "followingCount": 350,
+                  "heartCount": 1200000,
+                  "videoCount": 153,
+                  "likeCount": 19500,
+                  "friendCount": 128
+                }
+              },
+              "companyName": "",
+              "createdAt": "2025-08-03T08:47:06.498Z",
+              "lastLogin": "2025-08-03T08:47:06.498Z",
+              "isFirstTime": true,
+              "campaigns": [],
+              "lastUpdated": 1754210825759,
+              "id": "jotsaange@gmail.com"
+            },
+            {
+              "userType": "creator",
+              "email": "user04@gmail.com",
+              "phone": "676073559",
+              "password": "1234",
+              "username": "vouks.rt",
+              "tiktokUser": {
+                "user": {
+                  "uid": "7090270909333013509",
+                  "username": "vouks.rt",
+                  "nickname": "Dr. ggrrr",
+                  "avatarLarger": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=d80c1bd1&x-expires=1754380800&x-signature=KPJkp2LQ1IUEr1VNC7nc9AWnHOY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarThumb": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:100:100.jpeg?dr=14579&refresh_token=272eefaa&x-expires=1754380800&x-signature=Y7fWgZ9r0fd4YBtRmDp46%2FRc8%2FI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarMedium": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:720:720.jpeg?dr=14579&refresh_token=180ba3a4&x-expires=1754380800&x-signature=WzZ6OQ%2FJUT2jy0yyLF7i8k3MnqI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "signature": "『gV』\nje s'appelle vouks\npour collaboration 🫵👇\npeanutsxonr@gmail.com",
+                  "verified": false,
+                  "privateAccount": false,
+                  "commerceUser": false,
+                  "usernameModifyTime": 0,
+                  "nicknameModifyTime": 1746563508,
+                  "secUid": "MS4wLjABAAAAQZzjGLPdTiEgtD1TSY3FXPbSsAvYzWyyzkkZgFd_7E1oqnJNa46XeTe-FH89bfEH"
+                },
+                "stats": {
+                  "followerCount": 78500,
+                  "followingCount": 350,
+                  "heartCount": 900000,
+                  "videoCount": 153,
+                  "likeCount": 19500,
+                  "friendCount": 128
+                }
+              },
+              "companyName": "",
+              "createdAt": "2025-08-03T08:47:06.498Z",
+              "lastLogin": "2025-08-03T08:47:06.498Z",
+              "isFirstTime": true,
+              "campaigns": [],
+              "lastUpdated": 1754210825759,
+              "id": "user04@gmail.com"
+            },
+            {
+              "userType": "creator",
+              "email": "jotsaange@gmail.com",
+              "phone": "676073559",
+              "password": "1234",
+              "username": "vouks.bt",
+              "tiktokUser": {
+                "user": {
+                  "uid": "7090270909333013509",
+                  "username": "vouks.bt",
+                  "nickname": "Dr. Vook",
+                  "avatarLarger": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=d80c1bd1&x-expires=1754380800&x-signature=KPJkp2LQ1IUEr1VNC7nc9AWnHOY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarThumb": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:100:100.jpeg?dr=14579&refresh_token=272eefaa&x-expires=1754380800&x-signature=Y7fWgZ9r0fd4YBtRmDp46%2FRc8%2FI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarMedium": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:720:720.jpeg?dr=14579&refresh_token=180ba3a4&x-expires=1754380800&x-signature=WzZ6OQ%2FJUT2jy0yyLF7i8k3MnqI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "signature": "『gV』\nje s'appelle vouks\npour collaboration 🫵👇\npeanutsxonr@gmail.com",
+                  "verified": false,
+                  "privateAccount": false,
+                  "commerceUser": false,
+                  "usernameModifyTime": 0,
+                  "nicknameModifyTime": 1746563508,
+                  "secUid": "MS4wLjABAAAAQZzjGLPdTiEgtD1TSY3FXPbSsAvYzWyyzkkZgFd_7E1oqnJNa46XeTe-FH89bfEH"
+                },
+                "stats": {
+                  "followerCount": 11500,
+                  "followingCount": 350,
+                  "heartCount": 1200000,
+                  "videoCount": 153,
+                  "likeCount": 19500,
+                  "friendCount": 128
+                }
+              },
+              "companyName": "",
+              "createdAt": "2025-08-03T08:47:06.498Z",
+              "lastLogin": "2025-08-03T08:47:06.498Z",
+              "isFirstTime": true,
+              "campaigns": [],
+              "lastUpdated": 1754210825759,
+              "id": "user03@gmail.com"
+            }
+          ]
+        }
+      },
+      "campaignType": {
+        "captionCampaign": {
+          "state": false,
+          "caption": ""
+        },
+        "textInContentCampaign": {
+          "state": false,
+          "text": ""
+        },
+        "VideoInContentCampaign": {
+          "state": true,
+          "video": {
+            "mimeType": "video/mp4",
+            "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/98a0f411-428f-4759-af14-83a450f54119.mp4",
+            "name": "b98947e1c7bcaf576abac740c7839f3a.mp4",
+            "size": 4807998,
+            "serverName": "InVideo-jotsaange_gmail.com-1754914846620.mp4"
+          },
+          "videoPosition": "creator-choice",
+          "shouldSpeakOver": false,
+          "speakOverScript": ""
+        },
+        "fullPresentationCampaign": {
+          "state": true,
+          "documents": [
+            {
+              "name": "Documents-0-jotsaange_gmail.com-1754914859570.pdf",
+              "size": 218434,
+              "mimeType": "application/pdf",
+              "serverName": "Documents-0-jotsaange_gmail.com-1754914859570.pdf"
+            }
+          ],
+          "description": "ne privez jamais quelqu'un d'espoir, c'est peut-être tout ce qui lui reste"
+        }
+      },
+      "evolution": {
+        "participatingCreators": [
+          {
+            "creator": {
+              "email": "jotsaange@gmail.com",
+              "username": "vouks.san"
+            },
+            "participation": {
+              "status": "review",
+              "postulatedDate": 1756703289122,
+              "postulationAcceptanceDate": null
+            }
+          }
+        ],
+        "participantsVideos": [],
+        "stats": []
+      },
+      "createdAt": 1754915417285,
+      "status": "active"
+    },
+    "campaign-jotsaange@gmail.com-1754914878677": {
+      "id": "campaign-jotsaange@gmail.com-1754914878677",
+      "campaignOwner": "jotsaange@gmail.com",
+      "campaignInfo": {
+        "title": "3 - ne privez jamais quelqu'un d'espoir, c'est ",
+        "image": "Cover-jotsaange_gmail.com-1754914871614.jpeg",
+        "description": "ne privez jamais quelqu'un d'espoir, c'est peut-être tout ce qui lui reste. Yo yoy yo",
+        "startDate": 1754953200000,
+        "endDate": 1755644400000,
+        "documents": [
+          {
+            "name": "Cover-jotsaange_gmail.com-1754914871614.jpeg",
+            "serverName": "Cover-jotsaange_gmail.com-1754914871614.jpeg"
+          },
+          {
+            "name": "InVideo-jotsaange_gmail.com-1754914846620.mp4",
+            "size": 4807998,
+            "mimeType": "video/mp4",
+            "serverName": "InVideo-jotsaange_gmail.com-1754914846620.mp4"
+          },
+          {
+            "name": "Documents-0-jotsaange_gmail.com-1754914859570.pdf",
+            "size": 218434,
+            "mimeType": "application/pdf",
+            "serverName": "Documents-0-jotsaange_gmail.com-1754914859570.pdf"
+          }
+        ]
+      },
+      "campaignCreatorsAndBudget": {
+        "totalBudget": "30000",
+        "limitBudgetPerCreator": {
+          "state": false,
+          "min": 1,
+          "max": ""
+        },
+        "limitContentPerCreator": {
+          "state": false,
+          "min": 1,
+          "max": 5
+        },
+        "limitParticipatingCreator": {
+          "state": true,
+          "creators": [
+            {
+              "userType": "creator",
+              "email": "user01@gmail.com",
+              "phone": "676073559",
+              "password": "1234",
+              "username": "vouks.san2",
+              "tiktokUser": {
+                "user": {
+                  "uid": "7090270909333013509",
+                  "username": "vouks.san2",
+                  "nickname": "Dr. Vouks2",
+                  "avatarLarger": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=d80c1bd1&x-expires=1754380800&x-signature=KPJkp2LQ1IUEr1VNC7nc9AWnHOY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarThumb": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:100:100.jpeg?dr=14579&refresh_token=272eefaa&x-expires=1754380800&x-signature=Y7fWgZ9r0fd4YBtRmDp46%2FRc8%2FI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarMedium": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:720:720.jpeg?dr=14579&refresh_token=180ba3a4&x-expires=1754380800&x-signature=WzZ6OQ%2FJUT2jy0yyLF7i8k3MnqI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "signature": "『gV』\nje s'appelle vouks\npour collaboration 🫵👇\npeanutsxonr@gmail.com",
+                  "verified": false,
+                  "privateAccount": false,
+                  "commerceUser": false,
+                  "usernameModifyTime": 0,
+                  "nicknameModifyTime": 1746563508,
+                  "secUid": "MS4wLjABAAAAQZzjGLPdTiEgtD1TSY3FXPbSsAvYzWyyzkkZgFd_7E1oqnJNa46XeTe-FH89bfEH"
+                },
+                "stats": {
+                  "followerCount": 12500,
+                  "followingCount": 350,
+                  "heartCount": 1150000,
+                  "videoCount": 153,
+                  "likeCount": 19500,
+                  "friendCount": 128
+                }
+              },
+              "companyName": "",
+              "createdAt": "2025-08-03T08:47:06.498Z",
+              "lastLogin": "2025-08-03T08:47:06.498Z",
+              "isFirstTime": true,
+              "campaigns": [],
+              "lastUpdated": 1754210825759,
+              "id": "user01@gmail.com"
+            },
+            {
+              "userType": "creator",
+              "email": "jotsaange@gmail.com",
+              "phone": "676073559",
+              "password": "1234",
+              "username": "vouks.san",
+              "tiktokUser": {
+                "user": {
+                  "uid": "7090270909333013509",
+                  "username": "vouks.san",
+                  "nickname": "Dr. Vouks",
+                  "avatarLarger": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=d80c1bd1&x-expires=1754380800&x-signature=KPJkp2LQ1IUEr1VNC7nc9AWnHOY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarThumb": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:100:100.jpeg?dr=14579&refresh_token=272eefaa&x-expires=1754380800&x-signature=Y7fWgZ9r0fd4YBtRmDp46%2FRc8%2FI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarMedium": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:720:720.jpeg?dr=14579&refresh_token=180ba3a4&x-expires=1754380800&x-signature=WzZ6OQ%2FJUT2jy0yyLF7i8k3MnqI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "signature": "『gV』\nje s'appelle vouks\npour collaboration 🫵👇\npeanutsxonr@gmail.com",
+                  "verified": false,
+                  "privateAccount": false,
+                  "commerceUser": false,
+                  "usernameModifyTime": 0,
+                  "nicknameModifyTime": 1746563508,
+                  "secUid": "MS4wLjABAAAAQZzjGLPdTiEgtD1TSY3FXPbSsAvYzWyyzkkZgFd_7E1oqnJNa46XeTe-FH89bfEH"
+                },
+                "stats": {
+                  "followerCount": 31500,
+                  "followingCount": 350,
+                  "heartCount": 1200000,
+                  "videoCount": 153,
+                  "likeCount": 19500,
+                  "friendCount": 128
+                }
+              },
+              "companyName": "",
+              "createdAt": "2025-08-03T08:47:06.498Z",
+              "lastLogin": "2025-08-03T08:47:06.498Z",
+              "isFirstTime": true,
+              "campaigns": [],
+              "lastUpdated": 1754210825759,
+              "id": "jotsaange@gmail.com"
+            },
+            {
+              "userType": "creator",
+              "email": "user04@gmail.com",
+              "phone": "676073559",
+              "password": "1234",
+              "username": "vouks.rt",
+              "tiktokUser": {
+                "user": {
+                  "uid": "7090270909333013509",
+                  "username": "vouks.rt",
+                  "nickname": "Dr. ggrrr",
+                  "avatarLarger": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=d80c1bd1&x-expires=1754380800&x-signature=KPJkp2LQ1IUEr1VNC7nc9AWnHOY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarThumb": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:100:100.jpeg?dr=14579&refresh_token=272eefaa&x-expires=1754380800&x-signature=Y7fWgZ9r0fd4YBtRmDp46%2FRc8%2FI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarMedium": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:720:720.jpeg?dr=14579&refresh_token=180ba3a4&x-expires=1754380800&x-signature=WzZ6OQ%2FJUT2jy0yyLF7i8k3MnqI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "signature": "『gV』\nje s'appelle vouks\npour collaboration 🫵👇\npeanutsxonr@gmail.com",
+                  "verified": false,
+                  "privateAccount": false,
+                  "commerceUser": false,
+                  "usernameModifyTime": 0,
+                  "nicknameModifyTime": 1746563508,
+                  "secUid": "MS4wLjABAAAAQZzjGLPdTiEgtD1TSY3FXPbSsAvYzWyyzkkZgFd_7E1oqnJNa46XeTe-FH89bfEH"
+                },
+                "stats": {
+                  "followerCount": 78500,
+                  "followingCount": 350,
+                  "heartCount": 900000,
+                  "videoCount": 153,
+                  "likeCount": 19500,
+                  "friendCount": 128
+                }
+              },
+              "companyName": "",
+              "createdAt": "2025-08-03T08:47:06.498Z",
+              "lastLogin": "2025-08-03T08:47:06.498Z",
+              "isFirstTime": true,
+              "campaigns": [],
+              "lastUpdated": 1754210825759,
+              "id": "user04@gmail.com"
+            },
+            {
+              "userType": "creator",
+              "email": "jotsaange@gmail.com",
+              "phone": "676073559",
+              "password": "1234",
+              "username": "vouks.bt",
+              "tiktokUser": {
+                "user": {
+                  "uid": "7090270909333013509",
+                  "username": "vouks.bt",
+                  "nickname": "Dr. Vook",
+                  "avatarLarger": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=d80c1bd1&x-expires=1754380800&x-signature=KPJkp2LQ1IUEr1VNC7nc9AWnHOY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarThumb": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:100:100.jpeg?dr=14579&refresh_token=272eefaa&x-expires=1754380800&x-signature=Y7fWgZ9r0fd4YBtRmDp46%2FRc8%2FI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "avatarMedium": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f5668771f11f90fcd81a51d28145e22e~tplv-tiktokx-cropcenter:720:720.jpeg?dr=14579&refresh_token=180ba3a4&x-expires=1754380800&x-signature=WzZ6OQ%2FJUT2jy0yyLF7i8k3MnqI%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=maliva",
+                  "signature": "『gV』\nje s'appelle vouks\npour collaboration 🫵👇\npeanutsxonr@gmail.com",
+                  "verified": false,
+                  "privateAccount": false,
+                  "commerceUser": false,
+                  "usernameModifyTime": 0,
+                  "nicknameModifyTime": 1746563508,
+                  "secUid": "MS4wLjABAAAAQZzjGLPdTiEgtD1TSY3FXPbSsAvYzWyyzkkZgFd_7E1oqnJNa46XeTe-FH89bfEH"
+                },
+                "stats": {
+                  "followerCount": 11500,
+                  "followingCount": 350,
+                  "heartCount": 1200000,
+                  "videoCount": 153,
+                  "likeCount": 19500,
+                  "friendCount": 128
+                }
+              },
+              "companyName": "",
+              "createdAt": "2025-08-03T08:47:06.498Z",
+              "lastLogin": "2025-08-03T08:47:06.498Z",
+              "isFirstTime": true,
+              "campaigns": [],
+              "lastUpdated": 1754210825759,
+              "id": "user03@gmail.com"
+            }
+          ]
+        }
+      },
+      "campaignType": {
+        "captionCampaign": {
+          "state": false,
+          "caption": ""
+        },
+        "textInContentCampaign": {
+          "state": false,
+          "text": ""
+        },
+        "VideoInContentCampaign": {
+          "state": true,
+          "video": {
+            "mimeType": "video/mp4",
+            "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/98a0f411-428f-4759-af14-83a450f54119.mp4",
+            "name": "b98947e1c7bcaf576abac740c7839f3a.mp4",
+            "size": 4807998,
+            "serverName": "InVideo-jotsaange_gmail.com-1754914846620.mp4"
+          },
+          "videoPosition": "creator-choice",
+          "shouldSpeakOver": false,
+          "speakOverScript": ""
+        },
+        "fullPresentationCampaign": {
+          "state": true,
+          "documents": [
+            {
+              "name": "Documents-0-jotsaange_gmail.com-1754914859570.pdf",
+              "size": 218434,
+              "mimeType": "application/pdf",
+              "serverName": "Documents-0-jotsaange_gmail.com-1754914859570.pdf"
+            }
+          ],
+          "description": "ne privez jamais quelqu'un d'espoir, c'est peut-être tout ce qui lui reste"
+        }
+      },
+      "evolution": {
+        "participatingCreators": [
+          {
+            "creator": {
+              "email": "jotsaange@gmail.com",
+              "username": "vouks.san"
+            },
+            "participation": {
+              "status": "active",
+              "postulatedDate": 1756704170465,
+              "postulationAcceptanceDate": null
+            }
+          }
+        ],
+        "participantsVideos": [],
+        "stats": []
+      },
+      "createdAt": 1754915417285,
+      "status": "active"
     }
   },
   "transactions": {},

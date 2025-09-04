@@ -1,6 +1,20 @@
 import { Low } from 'lowdb'
 import { JSONFile } from 'lowdb/node'
 
+/** Deep merge objects with nested objects */
+function deepMerge(target, source) {
+    for (const key in source) {
+        if (source.hasOwnProperty(key)) {
+            if (typeof source[key] === 'object' && source[key] !== null && !Array.isArray(source[key]) && typeof target[key] === 'object' && target[key] !== null && !Array.isArray(target[key])) {
+                target[key] = deepMerge(target[key] || {}, source[key]);
+            } else {
+                target[key] = source[key];
+            }
+        }
+    }
+    return target;
+}
+
 // Define the file where data will be saved
 const DBFile = new JSONFile('../db/DB.json')
 const DB = new Low(DBFile, {})
@@ -59,10 +73,7 @@ const updateDoc = async (collection_id, document_id, data) => {
         return false;
     }
 
-    DB.data[collection_id][document_id] = {
-        ...DB.data[collection_id][document_id],
-        ...data
-    };
+    DB.data[collection_id][document_id] = deepMerge({ ...DB.data[collection_id][document_id] }, { ...data });
     await DB.write();
     return { ...DB.data[collection_id][document_id] };
 }
