@@ -55,8 +55,9 @@ const updateCycle = async () => {
             userVideos.forEach((uv) => {
                 let temp = campaigns[uv.campaignId].evolution.participatingCreators.find(
                     pc => pc.creator.email === user.email
-                )?.videos?.find((vid) => vid.id === uv.id)
-                temp?.history = temp?.history ?
+                )?.videos?.find((vid) => vid.id === uv.id) 
+                if(temp)
+                temp.history = temp?.history ?
                     temp?.history.concat([{
                         views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
                         likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
