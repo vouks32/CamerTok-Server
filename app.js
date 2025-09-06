@@ -36,13 +36,14 @@ const updateCycle = async () => {
                 const t = c.evolution.participatingCreators.find(
                     pc => pc.creator.email === user.email
                 )?.videos?.filter((vid) => vid.status === "active")?.map(vid => {
-                    return { ...vid, campaignId: c.id }
+                    const v = { ...vid, campaignId: c.id }
+                    return v
                 })
                 if (t)
                     userVideos.push(t)
             })
 
-            console.log('getting data for', user.email, "videos", userVideos.map(v => v.id))
+            console.log('getting data for', user.email, "videos", userVideos)
 
             /*const updateUser = await (await fetch('https://campay-api.vercel.app/api/refresh_token?email=' + user?.email + '&refresh_token=' + user?.tiktokToken.refresh_token)).json()
             console.log(' Token ', updateUser?.tiktokToken)
