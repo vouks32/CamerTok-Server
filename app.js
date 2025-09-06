@@ -45,6 +45,8 @@ const updateCycle = async () => {
             console.log('getting data for', user.email, "videos", userVideos.length)
 
             const updateUser = await (await fetch('https://campay-api.vercel.app/api/refresh_token?email=' + user?.email + '&refresh_token=' + user?.tiktokToken.refresh_token)).json()
+            console.log(' Token ', updateUser?.tiktokToken)
+
             const createResponse = await fetch('https://open.tiktokapis.com/v2/video/query/?fields=id,title,video_description,duration,cover_image_url,embed_link,view_count,like_count,comment_count,share_count,create_time', {
                 method: 'POST',
                 headers: {
@@ -54,6 +56,7 @@ const updateCycle = async () => {
                 body: JSON.stringify({ "filters": { "video_ids": userVideos.map(v => v.id) } })
             });
             const response = await createResponse.json()
+            console.log(' video query ', response)
             const UpdatedVideos = response.data.videos;
 
             userVideos.forEach((uv) => {
