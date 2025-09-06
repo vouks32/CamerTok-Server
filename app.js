@@ -24,18 +24,22 @@ const updateCycle = async () => {
 
     // Get users Videos stats
     const users = await getDocs('users');
-    console.log("Updating stats for users =", users.size)
+    console.log("Updating stats for users =", users.docs.filter(u => u.userType === "creator").length)
 
     for (let i = 0; i < users.size; i++) {
         const user = users.docs[i]
+        if (user.userType !== "creator") continue
+
         let userVideos = []
         try {
             campaigns.forEach(c => {
-                userVideos.push(c.evolution.participatingCreators.find(
+                const t = c.evolution.participatingCreators.find(
                     pc => pc.creator.email === user.email
                 )?.videos?.filter((vid) => vid.status === "active")?.map(vid => {
                     return { ...vid, campaignId: c.id }
-                }))
+                })
+                if (t)
+                    userVideos.push(t)
             })
 
             console.log('getting data for', user.email, "videos", userVideos.length)
@@ -55,24 +59,24 @@ const updateCycle = async () => {
             userVideos.forEach((uv) => {
                 let temp = campaigns[uv.campaignId].evolution.participatingCreators.find(
                     pc => pc.creator.email === user.email
-                )?.videos?.find((vid) => vid.id === uv.id) 
-                if(temp)
-                temp.history = temp?.history ?
-                    temp?.history.concat([{
-                        views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
-                        likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
-                        shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
-                        comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
-                        date: Date.now()
-                    }])
-                    :
-                    [{
-                        views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
-                        likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
-                        shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
-                        comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
-                        date: Date.now()
-                    }]
+                )?.videos?.find((vid) => vid.id === uv.id)
+                if (temp)
+                    temp.history = temp?.history ?
+                        temp?.history.concat([{
+                            views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
+                            likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
+                            shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
+                            comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
+                            date: Date.now()
+                        }])
+                        :
+                        [{
+                            views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
+                            likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
+                            shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
+                            comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
+                            date: Date.now()
+                        }]
             })
 
 
@@ -84,7 +88,7 @@ const updateCycle = async () => {
     }
 };
 
-let secondstilNext6hr =  10 //(60 * 60 * 6) - (Math.floor((new Date()).valueOf() / 1000) % (60 * 60 * 6))
+let secondstilNext6hr = 10 //(60 * 60 * 6) - (Math.floor((new Date()).valueOf() / 1000) % (60 * 60 * 6))
 
 setTimeout(() => {
     console.log(" ---- regular update Start ---- ");
