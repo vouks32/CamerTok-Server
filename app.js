@@ -16,7 +16,7 @@ const updateCycle = async () => {
     //Manage Campaigns 
     const campaigns = (await getDocs('campaigns')).docs;
     /*for (let i = 0; i < campaigns.length; i++) {
-        let campaign = campaigns.docs[i]
+        let campaign = campaigns[i]
         if (Date.now() >= (campaign.campaignInfo.endDate - 1000 * 60 * 60) && campaign.status === "active") {
             campaign.status = 'ended'
         }
@@ -89,7 +89,7 @@ const updateCycle = async () => {
     }
 
     for (let i = 0; i < campaigns.length; i++) {
-        let campaign = campaigns.docs[i]
+        let campaign = campaigns[i]
         await updateDoc('campaigns', campaign.id, campaign)
     }
     console.groupEnd()
