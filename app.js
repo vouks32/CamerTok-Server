@@ -45,7 +45,7 @@ const updateCycle = async () => {
 
             console.log('getting data for', user.email, "videos", userVideos)
 
-            /*const updateUser = await (await fetch('https://campay-api.vercel.app/api/refresh_token?email=' + user?.email + '&refresh_token=' + user?.tiktokToken.refresh_token)).json()
+            const updateUser = await (await fetch('https://campay-api.vercel.app/api/refresh_token?email=' + user?.email + '&refresh_token=' + user?.tiktokToken.refresh_token)).json()
             console.log(' Token ', updateUser?.tiktokToken)
 
             const createResponse = await fetch('https://open.tiktokapis.com/v2/video/query/?fields=id,title,video_description,duration,cover_image_url,embed_link,view_count,like_count,comment_count,share_count,create_time', {
@@ -82,7 +82,6 @@ const updateCycle = async () => {
                             date: Date.now()
                         }]
             })
-*/
 
             await wait(10)
 
