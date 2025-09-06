@@ -7,39 +7,75 @@ console.clear();
 api.listen(80, () => {
     console.log(`Serveur joueur démarré sur le port 80`);
 });
- 
+
 defineWebSocket();
 
 let interval
 
 const updateCycle = async () => {
-    /* const now = new Date();
-     const minutes = now.getMinutes();
-     phaseMinutes = minutes % 20;
-     remainingMinutes = isDayPhase ? (9 - phaseMinutes) : (19 - phaseMinutes);
-     remainingSeconds = 59 - now.getSeconds();
- 
-     if ((minutes % 20) < 10 && !isDayPhase) { }
-     if ((minutes % 20) >= 10 && isDayPhase) { }
- 
-     isDayPhase = (minutes % 20) < 10;*/
+    //Manage Campaigns 
+    const campaigns = (await getDocs('campaigns')).docs;
+    for (let i = 0; i < campaigns.size; i++) {
+        let campaign = campaigns.docs[i]
+        if (Date.now() >= (campaign.campaignInfo.endDate - 1000 * 60 * 60) && campaign.status === "active") {
+            campaign.status = 'ended'
+        }
+    }
 
+    // Get users Videos stats
     const users = await getDocs('users');
-    console.log(users.size)
+    console.log("Updating stats for users =", users.size)
+
     for (let i = 0; i < users.size; i++) {
         const user = users.docs[i]
+        let userVideos = []
         try {
-            if ((user.lastTiktokUpdate && user.lastTiktokUpdate < Date.now() - (1000 * 60 * 60 * 12)) && (!user.lastConnected || (user.lastConnected && user.lastConnected > Date.now() - (1000 * 60 * 60 * 24 * 14)))) {
-                console.log("new user", user.username)
-                const { username } = user;
-                const TiktokAccount = await GetTiktokInfo(username)
-                if (TiktokAccount.status === "error") {
-                    console.log('compte non trouvé', username, user.email);
-                } else {
-                    await updateDoc('users', user.email, { tiktokUser: TiktokAccount.result, lastTiktokUpdate: Date.now() })
-                }
-            }
-            await wait()
+            campaigns.forEach(c => {
+                userVideos.push(c.evolution.participatingCreators.find(
+                    pc => pc.creator.email === user.email
+                ).videos?.filter((vid) => vid.status === "active").map(vid => {
+                    return { ...vid, campaignId: c.id }
+                }))
+            })
+
+            console.log('getting data for', user.email, "videos", userVideos.length)
+
+            const updateUser = await (await fetch('https://campay-api.vercel.app/api/refresh_token?email=' + user?.email + '&refresh_token=' + user?.tiktokToken.refresh_token)).json()
+            const createResponse = await fetch('https://open.tiktokapis.com/v2/video/query/?fields=id,title,video_description,duration,cover_image_url,embed_link,view_count,like_count,comment_count,share_count,create_time', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + updateUser?.tiktokToken.access_token
+                },
+                body: JSON.stringify({ "filters": { "video_ids": userVideos.map(v => v.id) } })
+            });
+            const response = await createResponse.json()
+            const UpdatedVideos = response.data.videos;
+
+            userVideos.forEach((uv) => {
+                let temp = campaigns[uv.campaignId].evolution.participatingCreators.find(
+                    pc => pc.creator.email === user.email
+                ).videos?.find((vid) => vid.id === uv.id)
+                temp.history = temp.history ?
+                    temp.history.push({
+                        views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
+                        likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
+                        shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
+                        comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
+                        date: Date.now()
+                    })
+                    :
+                    [{
+                        views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
+                        likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
+                        shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
+                        comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
+                        date: Date.now()
+                    }]
+            })
+
+
+            await wait(10)
 
         } catch (error) {
             console.error('Erreur récupération compte Tiktok:', user.email, error);
@@ -47,15 +83,16 @@ const updateCycle = async () => {
     }
 };
 
-let timetilNextMin = 60 - ((new Date()).getSeconds() % 60)
+let secondstilNext6hr =  10 //(60 * 60 * 6) - (Math.floor((new Date()).valueOf() / 1000) % (60 * 60 * 6))
+
 setTimeout(() => {
     console.log(" ---- regular update Start ---- ");
-  //  updateCycle();
-   // interval = setInterval(updateCycle, 1000 * 60 * 10);
-}, timetilNextMin * 1000)
+    updateCycle();
+    interval = setInterval(updateCycle, 1000 * 60 * 10);
+}, secondstilNext6hr * 1000)
 
 
-function wait() {
+function wait(seconds) {
     return new Promise((resolve, reject) => {
         // Simulate an asynchronous task (e.g., a network request, a timer)
         setTimeout(() => {
@@ -65,7 +102,7 @@ function wait() {
             } else {
                 reject("Function encountered an error.");
             }
-        }, 2000); // Wait for 2 seconds
+        }, seconds * 1000); // Wait for 2 seconds
     });
 }
 
