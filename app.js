@@ -24,7 +24,7 @@ const updateCycle = async () => {
 
     // Get users Videos stats
     const users = await getDocs('users');
-    console.log("Updating stats for users =", users.docs.filter(u => u.userType === "creator").length)
+    console.group("Updating stats for users =", users.docs.filter(u => u.userType === "creator").length)
 
     for (let i = 0; i < users.size; i++) {
         const user = users.docs[i]
@@ -43,11 +43,9 @@ const updateCycle = async () => {
                     userVideos = userVideos.concat(t)
             })
 
-            console.log('getting data for', user.email, "videos", userVideos)
+            console.log('getting data for', user.email, "videos", userVideos.length)
 
             const updateUser = await (await fetch('https://campay-api.vercel.app/api/refresh_token?email=' + user?.email + '&refresh_token=' + user?.tiktokToken.refresh_token)).json()
-            console.log(' Token ', updateUser?.tiktokToken)
-
             const createResponse = await fetch('https://open.tiktokapis.com/v2/video/query/?fields=id,title,video_description,duration,cover_image_url,embed_link,view_count,like_count,comment_count,share_count,create_time', {
                 method: 'POST',
                 headers: {
@@ -57,8 +55,9 @@ const updateCycle = async () => {
                 body: JSON.stringify({ "filters": { "video_ids": userVideos.map(v => v.id) } })
             });
             const response = await createResponse.json()
-            console.log(' video query ', response)
             const UpdatedVideos = response.data.videos;
+
+            console.log('setting data for', user.email, "videos", userVideos.length)
 
             userVideos.forEach((uv) => {
                 let temp = campaigns.find(c => c.id === uv.campaignId).evolution.participatingCreators.find(
@@ -83,6 +82,7 @@ const updateCycle = async () => {
                         }]
             })
             await wait(10)
+            console.log(" ---- ----- ")
         } catch (error) {
             console.error('Erreur récupération compte Tiktok:', user.email, error);
         }
@@ -92,6 +92,7 @@ const updateCycle = async () => {
         let campaign = campaigns.docs[i]
         await updateDoc('campaigns', campaign.id, campaign)
     }
+    console.groupEnd()
 };
 
 let secondstilNext6hr = 10 //(60 * 60 * 6) - (Math.floor((new Date()).valueOf() / 1000) % (60 * 60 * 6))
