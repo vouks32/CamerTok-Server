@@ -33,7 +33,7 @@ const updateCycle = async () => {
             campaigns.forEach(c => {
                 userVideos.push(c.evolution.participatingCreators.find(
                     pc => pc.creator.email === user.email
-                ).videos?.filter((vid) => vid.status === "active").map(vid => {
+                )?.videos?.filter((vid) => vid.status === "active")?.map(vid => {
                     return { ...vid, campaignId: c.id }
                 }))
             })
@@ -55,15 +55,15 @@ const updateCycle = async () => {
             userVideos.forEach((uv) => {
                 let temp = campaigns[uv.campaignId].evolution.participatingCreators.find(
                     pc => pc.creator.email === user.email
-                ).videos?.find((vid) => vid.id === uv.id)
-                temp.history = temp.history ?
-                    temp.history.push({
+                )?.videos?.find((vid) => vid.id === uv.id)
+                temp?.history = temp?.history ?
+                    temp?.history.concat([{
                         views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
                         likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
                         shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
                         comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
                         date: Date.now()
-                    })
+                    }])
                     :
                     [{
                         views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
