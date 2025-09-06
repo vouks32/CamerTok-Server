@@ -40,7 +40,7 @@ const updateCycle = async () => {
                     return v
                 })
                 if (t)
-                    userVideos.push(t)
+                    userVideos = userVideos.concat(t)
             })
 
             console.log('getting data for', user.email, "videos", userVideos)
