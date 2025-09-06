@@ -15,12 +15,12 @@ let interval
 const updateCycle = async () => {
     //Manage Campaigns 
     const campaigns = (await getDocs('campaigns')).docs;
-    for (let i = 0; i < campaigns.size; i++) {
+    /*for (let i = 0; i < campaigns.length; i++) {
         let campaign = campaigns.docs[i]
         if (Date.now() >= (campaign.campaignInfo.endDate - 1000 * 60 * 60) && campaign.status === "active") {
             campaign.status = 'ended'
         }
-    }
+    }*/
 
     // Get users Videos stats
     const users = await getDocs('users');
@@ -61,7 +61,7 @@ const updateCycle = async () => {
             const UpdatedVideos = response.data.videos;
 
             userVideos.forEach((uv) => {
-                let temp = campaigns[uv.campaignId].evolution.participatingCreators.find(
+                let temp = campaigns.find(c => c.id === uv.campaignId).evolution.participatingCreators.find(
                     pc => pc.creator.email === user.email
                 )?.videos?.find((vid) => vid.id === uv.id)
                 if (temp)
@@ -82,12 +82,15 @@ const updateCycle = async () => {
                             date: Date.now()
                         }]
             })
-
             await wait(10)
-
         } catch (error) {
             console.error('Erreur récupération compte Tiktok:', user.email, error);
         }
+    }
+
+    for (let i = 0; i < campaigns.length; i++) {
+        let campaign = campaigns.docs[i]
+        await updateDoc('campaigns', campaign.id, campaign)
     }
 };
 
