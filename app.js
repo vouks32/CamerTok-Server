@@ -99,8 +99,8 @@ let secondstilNext6hr = 10 //(60 * 60 * 6) - (Math.floor((new Date()).valueOf() 
 
 setTimeout(() => {
     console.log(" ---- regular update Start ---- ");
-    updateCycle();
-    interval = setInterval(updateCycle, 1000 * 60 * 10);
+    //updateCycle();
+   // interval = setInterval(updateCycle, 1000 * 60 * 10);
 }, secondstilNext6hr * 1000)
 
 
