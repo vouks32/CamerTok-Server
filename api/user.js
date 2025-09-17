@@ -1,4 +1,4 @@
-import { addDoc, getDoc, getDocs, updateDoc } from '../firestore.js';
+import { addDoc, getDoc, getDocs, updateDoc, uploadFile, getFileUrl, deleteFile } from '../firestore.js';
 import e from 'express';
 import cors from "cors";
 import { fileURLToPath } from 'url';
@@ -8,75 +8,8 @@ import multer from 'multer';
 import fs from 'fs'
 
 // server.js
-import { WebSocketServer } from 'ws';
 import axios from 'axios';
 
-let wss;
-const clients = new Set(); // Stocke tous les clients connectés
-
-
-const defineWebSocket = () => {
-  wss = new WebSocketServer({ port: 8080 });
-  wss.on('connection', (ws) => {
-    console.log('Client connected');
-    clients.add(ws); // Ajoute le nouveau client
-
-    // Envoi périodique de données
-    /*const interval = setInterval(() => {
-      sendToAllClients({
-        type: "alive"
-      });
-    }, 10000);*/
-
-    ws.on('close', () => {
-      console.log('Client disconnected');
-      clients.delete(ws); // Retire le client déconnecté
-      //clearInterval(interval);
-    });
-  });
-
-  console.log('WebSocket server running on ws://localhost:8080');
-
-}
-
-// Fonction pour envoyer à tous les clients
-function sendToAllClients(data) {
-  const message = JSON.stringify(data);
-  clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(message);
-    }
-  });
-}
-
-// Exemple: Envoyer un message depuis une autre fonction/partie du code
-function sendSocketData(type, message = "", value = -1) {
-  sendToAllClients({
-    type: type,
-    timestamp: Date.now(),
-    message: message,
-    value: value
-  });
-}
-
-const wsHelper = {
-  sendToAll: (data) => {
-    const message = JSON.stringify(data);
-    clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(message);
-      }
-    });
-  },
-  sendData: (type, message = "", value = -1) => {
-    wsHelper.sendToAll({
-      type,
-      timestamp: Date.now(),
-      message,
-      value
-    });
-  }
-};
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -118,7 +51,6 @@ api.put('/api/users', async (req, res) => {
     console.log('updating', email)
 
     const playerData = await updateDoc('users', email, { ...req.body.updates, lastUpdated: Date.now(), lastConnected: Date.now() })
-    //// FAIRE DES TRUCS ////
 
     if (playerData)
       console.log('updated successfully')
@@ -174,7 +106,6 @@ api.get('/api/tiktok/info', async (req, res) => {
   }
 });
 
-
 const GetTiktokInfo = async (username) => {
   const TiktokAccount = await Tiktok.StalkUser(username)
 
@@ -192,7 +123,6 @@ const GetTiktokInfo = async (username) => {
   }
   return TiktokAccount
 }
-
 
 const GetPostsStats = (posts) => {
   const postsPerDays = []
@@ -229,60 +159,38 @@ const GetPostsStats = (posts) => {
   return postsPerDays.sort((a, b) => a.timeStamp - b.timeStamp)
 }
 
-// Ensure uploads folder exists
-const UPLOAD_DIR = path.join(__dirname, "uploads");
 
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+api.post("/api/campaigns/files", async (req, res) => {
+  try {
+    const { campaignid } = req.query;
+    const uploadedFiles = [];
 
-// Configure storage with multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const campaignFolder = path.join(UPLOAD_DIR, req.query.campaignid);
-    if (!fs.existsSync(campaignFolder)) fs.mkdirSync(campaignFolder, { recursive: true });
-    cb(null, campaignFolder);
-  },
-  filename: function (req, file, cb) {
-    // Keep original filename but prefix with timestamp to avoid collisions
-    const safeName = file.originalname.replace(/\s+/g, "_");
-    //cb(null, `${Date.now()}-${safeName}`);
-    cb(null, file.originalname);
-  },
-});
+    for (const file of req.files) {
+      const filePath = `campaigns/${campaignid}/${file.originalname}`;
+      const downloadURL = await uploadFile(file.buffer, filePath, file.mimetype);
 
-// Accept multiple files under the field name 'files'
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 1024 * 1024 * 1024, // 1 GB limit (adjust to your needs)
-  },
-}).array("files", 20); // accept up to 20 files per request
-
-api.post("/api/campaigns/files", (req, res) => {
-  upload(req, res, (err) => {
-    if (err) {
-      console.error("Upload error:", err);
-      return res.status(500).json({ ok: false, error: err.message });
+      uploadedFiles.push({
+        originalname: file.originalname,
+        filename: file.originalname,
+        path: filePath,
+        size: file.size,
+        downloadURL
+      });
     }
-    console.log('file uploaded ->', req.files[0].filename)
 
-    // req.files is an array with file info saved locally
-    const saved = (req.files || []).map((f) => ({
-      originalname: f.originalname,
-      filename: f.filename,
-      path: f.path,
-      size: f.size,
-    }));
-    res.json({ ok: true, files: saved });
-  });
+    console.log('Files uploaded to Firebase Storage');
+    res.json({ ok: true, files: uploadedFiles });
+  } catch (error) {
+    console.error("Firebase upload error:", error);
+    res.status(500).json({ ok: false, error: error.message });
+  }
 });
-
 
 api.post("/api/campaigns/data", async (req, res) => {
   try {
     const campaign = req.body;
 
     if (campaign.action && campaign.action === "delete") {
-
       console.log("-------------");
       console.log("suppression de la campagne", campaign.campaignId);
       const updated = await updateDoc('campaigns', campaign.campaignId, { deleted: true })
@@ -309,13 +217,11 @@ api.post("/api/campaigns/data", async (req, res) => {
 });
 
 api.put("/api/campaigns/data", async (req, res) => {
-
   try {
     const campaign = req.body;
 
     console.log("-------------");
     console.log("Modification de la campagne", campaign.id);
-
 
     await updateDoc('campaigns', campaign.id, campaign)
     console.log("Modification de la campaign COMPLÉTÉ AVEC SUCCES");
@@ -347,25 +253,34 @@ api.get("/api/campaigns/data", async (req, res) => {
   }
 });
 
-// Récupération des données de la campagne
+// Récupération des fichiers de la campagne
 api.get("/api/campaigndocs/:campaignid/:filename", async (req, res) => {
   try {
     const { campaignid, filename } = req.params;
-    const campaignFolder = path.join(UPLOAD_DIR, campaignid);
-    const filepath = path.join(campaignFolder, filename);
+    const filePath = `campaigns/${campaignid}/${filename}`;
 
-    if (!fs.existsSync(filepath)) {
-      console.log('fichier NON trouvé', filename);
-      return res.status(404).json({ error: 'fichier non trouvé' });
-    }
-
-    console.log('fichier trouvé', filename);
-    res.sendFile(filepath)
+    const downloadURL = await getFileUrl(filePath);
+    res.redirect(downloadURL);
   } catch (error) {
-    console.error('Erreur récupération du fiechier:', req.query, error);
+    console.error('Erreur récupération du fichier:', req.params, error);
     res.status(500).json({ error: 'Échec récupération fichier' });
   }
 });
+
+// Suppression des fichiers
+api.delete("/api/campaigndocs/:campaignid/:filename", async (req, res) => {
+  try {
+    const { campaignid, filename } = req.params;
+    const filePath = `campaigns/${campaignid}/${filename}`;
+
+    await deleteFile(filePath);
+    res.json({ ok: true, message: 'Fichier supprimé avec succès' });
+  } catch (error) {
+    console.error('Erreur suppression du fichier:', req.params, error);
+    res.status(500).json({ error: 'Échec suppression fichier' });
+  }
+});
+
 
 /////////////////////////////////////////      TIKTOK   //////////////////////////////////////////
 
@@ -604,6 +519,8 @@ api.get("/tiktokfail", async (req, res) => {
 });
 
 
+
+
 /////////  ------------------------------------- SHAKU MINING ------------------------------------- ////////
 
 
@@ -673,7 +590,7 @@ api.get('/api/shaku/users', async (req, res) => {
   }
 });
 
-export { api, GetTiktokInfo, GetPostsStats, defineWebSocket }
+export { api, GetTiktokInfo, GetPostsStats }
 
 
 

@@ -1,17 +1,39 @@
+import { initializeApp } from 'firebase/app';
 import { 
+  getFirestore, 
   collection, 
   doc, 
   getDoc as getFirestoreDoc, 
   getDocs as getFirestoreDocs, 
   setDoc, 
-  updateDoc as updateFirestoreDoc, 
-  query as firestoreQuery, 
-  where, 
-  orderBy, 
-  limit, 
-  writeBatch 
+  updateDoc as updateFirestoreDoc,
+  query as firestoreQuery,
+  where,
+  orderBy,
+  limit
 } from 'firebase/firestore';
-import { db } from './firebase.js'; // Importez votre configuration Firebase ici
+import { 
+  getStorage, 
+  ref, 
+  uploadBytes, 
+  getDownloadURL, 
+  deleteObject 
+} from 'firebase/storage';
+
+// Configuration Firebase
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID
+};
+
+// Initialiser Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
 /** Deep merge objects with nested objects */
 function deepMerge(target, source) {
@@ -27,7 +49,7 @@ function deepMerge(target, source) {
     return target;
 }
 
-// Firestore crée automatiquement les collections, donc on n'a pas besoin d'initialiser manuellement
+// Firestore functions
 const createCollection = async (collection_id, initialDoc = null) => {
     if (initialDoc) {
         const { id, ...data } = initialDoc;
@@ -135,4 +157,31 @@ const query = () => {
     return builder;
 }
 
-export { createCollection, addDoc, updateDoc, getDoc, getDocs, query }
+// Firebase Storage functions
+const uploadFile = async (fileBuffer, filePath, mimeType) => {
+    const storageRef = ref(storage, filePath);
+    await uploadBytes(storageRef, fileBuffer, { contentType: mimeType });
+    return await getDownloadURL(storageRef);
+}
+
+const getFileUrl = async (filePath) => {
+    const storageRef = ref(storage, filePath);
+    return await getDownloadURL(storageRef);
+}
+
+const deleteFile = async (filePath) => {
+    const storageRef = ref(storage, filePath);
+    await deleteObject(storageRef);
+}
+
+export { 
+    createCollection, 
+    addDoc, 
+    updateDoc, 
+    getDoc, 
+    getDocs, 
+    query, 
+    uploadFile, 
+    getFileUrl, 
+    deleteFile 
+}
