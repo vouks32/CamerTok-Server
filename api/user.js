@@ -4,8 +4,6 @@ import cors from "cors";
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import Tiktok from '@tobyg74/tiktok-api-dl'
-import multer from 'multer';
-import fs from 'fs'
 
 // server.js
 import axios from 'axios';

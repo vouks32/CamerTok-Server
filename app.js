@@ -120,6 +120,8 @@ function wait(seconds) {
 }
 */
 
+export default api
+
 
 
 
