@@ -1,5 +1,5 @@
 import { getDocs, query, updateDoc } from './localDatabase.js';
-import { defineWebSocket, api, GetTiktokInfo } from "./api/user.js";
+import { api } from "./api/user.js";
 
 import Tiktok from '@tobyg74/tiktok-api-dl'
 
@@ -7,8 +7,6 @@ console.clear();
 api.listen(80, () => {
     console.log(`Serveur joueur démarré sur le port 80`);
 });
-
-defineWebSocket();
 
 let interval
 
