@@ -1,4 +1,4 @@
-import { addDoc, getDoc, getDocs, updateDoc } from '../localDatabase.js';
+import { addDoc, getDoc, getDocs, updateDoc } from '../firestore.js';
 import e from 'express';
 import cors from "cors";
 import { fileURLToPath } from 'url';
@@ -10,13 +10,6 @@ import fs from 'fs'
 // server.js
 import { WebSocketServer } from 'ws';
 import axios from 'axios';
-
-
-
-const CLIENT_KEY = 'sbawichfdxmm1wsd4z';
-const CLIENT_SECRET = 'AjwK8nzMegJOzmBZ7zg7zpUuO1NMZesw';
-const REDIRECT_URI = 'https://2xabba4k40yp.share.zrok.io/api/webhook'
-
 
 let wss;
 const clients = new Set(); // Stocke tous les clients connectés
@@ -127,7 +120,7 @@ api.put('/api/users', async (req, res) => {
     const playerData = await updateDoc('users', email, { ...req.body.updates, lastUpdated: Date.now(), lastConnected: Date.now() })
     //// FAIRE DES TRUCS ////
 
-    if(playerData)
+    if (playerData)
       console.log('updated successfully')
     res.json(playerData);
   } catch (error) {
@@ -187,7 +180,7 @@ const GetTiktokInfo = async (username) => {
 
   if (TiktokAccount.status !== "error") {
     console.log('compte trouvé', username);
-    const userPosts = {status : "failed"} //await Tiktok.GetUserPosts(username)
+    const userPosts = { status: "failed" } //await Tiktok.GetUserPosts(username)
     if (userPosts.status === 'success') {
       console.log(userPosts.totalPosts, "posts récupéré");
       TiktokAccount.result.posts = GetPostsStats(userPosts.result)
@@ -374,7 +367,17 @@ api.get("/api/campaigndocs/:campaignid/:filename", async (req, res) => {
   }
 });
 
+/////////////////////////////////////////      TIKTOK   //////////////////////////////////////////
+
+
+const CLIENT_KEY = 'sbawichfdxmm1wsd4z';
+const CLIENT_SECRET = 'AjwK8nzMegJOzmBZ7zg7zpUuO1NMZesw';
+const REDIRECT_URI = '/api/webhook'
+
+/////// //get requests to the root ("/") will route here
 api.get("/api/auth", async (req, res) => {
+  let hostUrl = req.protocol + '://' + req.get('host');
+
   const { email } = req.query
   const csrfState = Math.random().toString(36).substring(2);
   res.cookie('csrfState', csrfState, { maxAge: 60000 });
@@ -385,7 +388,7 @@ api.get("/api/auth", async (req, res) => {
   url += '?client_key=' + CLIENT_KEY;
   url += '&scope=user.info.basic,video.list,user.info.profile,user.info.stats';
   url += '&response_type=code';
-  url += '&redirect_uri=' + REDIRECT_URI;
+  url += '&redirect_uri=' + encodeURIComponent(hostUrl + REDIRECT_URI);
   url += '&state=' + csrfState + "--" + email;
 
   console.log("redirecting to", url)
@@ -393,52 +396,211 @@ api.get("/api/auth", async (req, res) => {
 
 });
 
+
 // Récupération des données de la campagne
 api.get("/api/webhook", async (req, res) => {
-  const { code, scopes, state, error, error_description } = req.params;
-  try {
+  const { code, scopes, state, error, error_description } = req.query;
+  let hostUrl = req.protocol + '://' + req.get('host');
 
+  try {
     if (error) {
       console.log(error, error_description)
+      res.redirect('/tiktokfail')
       return
     }
     if (code) {
-      const tiktokAuthCode = { scopes, state }
+      const tiktokAuthCode = { code, scopes, state, date: Math.round(Date.now() / 1000) }
       const userMail = state.split('--')[1]
       console.log(code, state)
 
-      updateDoc('users', userMail, { tiktokAuthCode })
+      //// Save Auth_code
+      const createResponse = await fetch(hostUrl + '/api/users', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          "skip_zrok_interstitial": "true"
+        },
+        body: JSON.stringify({
+          email: userMail,
+          updates: { tiktokAuthCode }
+        })
+      });
 
+      let updatedUser = await createResponse.json();
+      if (updatedUser.error) {
+        console.log("error saving code", updatedUser.error)
+      }
+
+      // Get tokenResp
       const tokenResponse = await axios.post(
-        discovery.tokenEndpoint,
+        'https://open.tiktokapis.com/v2/oauth/token/',
         {
           client_key: CLIENT_KEY,
           client_secret: CLIENT_SECRET,
           code,
           grant_type: 'authorization_code',
-          redirect_uri: REDIRECT_URI,
+          redirect_uri: hostUrl + REDIRECT_URI,
         },
         {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+        }
+      );
+      const Tresponse = tokenResponse.data;
+      if (!Tresponse.error) {
+
+        //Get Profil info
+        const ProfilResponse = await fetch('https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,avatar_url_100,display_name,bio_description,profile_deep_link,username,follower_count,following_count,likes_count,video_count', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + Tresponse.access_token
+          }
+        });
+        const Profil = (await ProfilResponse.json()).data.user
+
+        // Save Token+tiktokProfil
+        const updateResponse = await fetch(hostUrl + '/api/users', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
             "skip_zrok_interstitial": "true"
+          },
+          body: JSON.stringify({
+            email: userMail,
+            updates: {
+              tiktokUser: {
+                ...Profil,
+                date: Math.round(Date.now() / 1000),
+              },
+              tiktokToken: {
+                ...Tresponse,
+                access_token_date: Math.round(Date.now() / 1000),
+                refresh_token_date: Math.round(Date.now() / 1000)
+              }
+            }
+          })
+        });
+
+        let updatedUser = await updateResponse.json();
+        if (updatedUser.error) {
+          console.log("error saving Token", updatedUser.error)
+          res.redirect('/tiktokfail')
+        } else {
+          res.redirect('/tiktoksuccess')
+        }
+      } else {
+        console.log(Tresponse.error, Tresponse.error_description)
+        res.redirect('/tiktokfail')
+        return
+      }
+
+    } else {
+      res.redirect('/tiktokfail')
+    }
+  } catch (error) {
+    console.error('Erreur récupération du fiechier:', req.query, error);
+    res.redirect('/tiktokfail')
+  }
+});
+
+// Récupération des données de la campagne
+api.get("/api/refresh_token", async (req, res) => {
+  const { refresh_token, email } = req.query;
+  let hostUrl = req.protocol + '://' + req.get('host');
+
+  try {
+    if (refresh_token) {
+      const tokenResponse = await axios.post(
+        'https://open.tiktokapis.com/v2/oauth/token/',
+        {
+          client_key: CLIENT_KEY,
+          client_secret: CLIENT_SECRET,
+          grant_type: 'refresh_token',
+          refresh_token
+        },
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
           },
         }
       );
 
       const Tresponse = tokenResponse.data;
       if (!Tresponse.error) {
-        updateDoc('users', userMail, { ...Tresponse, date: Math.round(Date.now() / 1000) })
+        //Get Profil info
+        const ProfilResponse = await fetch('https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,avatar_url_100,display_name,bio_description,profile_deep_link,username,follower_count,following_count,likes_count,video_count', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + Tresponse.access_token
+          }
+        });
+        const Profil = (await ProfilResponse.json()).data.user
+
+        // Save Token+tiktokProfil
+        const updateResponse = await fetch(hostUrl + '/api/users', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            "skip_zrok_interstitial": "true"
+          },
+          body: JSON.stringify({
+            email: userMail,
+            updates: {
+              tiktokUser: {
+                ...Profil,
+                "followerCount": Profil.follower_count,
+                "followingCount": Profil.following_count,
+                "heartCount": Profil.likes_count,
+                "videoCount": Profil.video_count,
+                date: Math.round(Date.now() / 1000),
+              },
+              tiktokToken: {
+                ...Tresponse,
+                access_token_date: Math.round(Date.now() / 1000),
+                refresh_token_date: Math.round(Date.now() / 1000)
+              }
+            }
+          })
+        });
+
+        let updatedUser = await updateResponse.json();
+        if (updatedUser.error) {
+          console.log("error saving Token", updatedUser.error)
+          res.status(500).json({ success: false })
+        } else {
+          res.status(201).json(updatedUser);
+        }
       } else {
         console.log(Tresponse.error, Tresponse.error_description)
+        res.status(500).json({ success: false })
         return
       }
-
+    } else {
+      res.status(500).json({ success: false })
     }
   } catch (error) {
-    console.error('Erreur récupération du fiechier:', req.query, error);
-    res.status(500).json({ error: 'Échec récupération fichier' });
+    //console.error('Erreur récupération du fiechier:', req.query, error);
+    res.status(500).json({ success: false })
   }
+});
+
+
+/////// //get requests to the root ("/") will route here
+api.get('/yo', async (req, res) => {
+  let fullUrl = req.protocol + '://' + req.get('host');
+  console.log(req.protocol, '://', req.get('host'), req.originalUrl)
+  res.send("yooooooo => " + fullUrl);
+
+});
+
+
+/////// //get requests to the root ("/") will route here
+api.get("/tiktoksuccess", async (req, res) => {
+  res.sendFile(path.join(__dirname, 'tiktoksuccess.html'));
+});
+api.get("/tiktokfail", async (req, res) => {
+  res.sendFile(path.join(__dirname, 'tiktokfailure.html'));
 });
 
 
@@ -478,7 +640,7 @@ api.put('/api/shaku/users', async (req, res) => {
     const playerData = await updateDoc('ShakuUsers', email, { ...req.body.updates, lastUpdated: Date.now(), lastConnected: Date.now() })
     //// FAIRE DES TRUCS ////
 
-    if(playerData)
+    if (playerData)
       console.log('updated -- SHAKU -- successfully')
     res.json(playerData);
   } catch (error) {

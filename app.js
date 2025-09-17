@@ -15,12 +15,12 @@ let interval
 const updateCycle = async () => {
     //Manage Campaigns 
     const campaigns = (await getDocs('campaigns')).docs;
-    /*for (let i = 0; i < campaigns.length; i++) {
+    for (let i = 0; i < campaigns.length; i++) {
         let campaign = campaigns[i]
         if (Date.now() >= (campaign.campaignInfo.endDate - 1000 * 60 * 60) && campaign.status === "active") {
             campaign.status = 'ended'
         }
-    }*/
+    }
 
     // Get users Videos stats
     const users = await getDocs('users');
@@ -81,7 +81,7 @@ const updateCycle = async () => {
                             date: Date.now()
                         }]
             })
-            await wait(10)
+            //await wait(10)
             console.log(" ---- ----- ")
         } catch (error) {
             console.error('Erreur récupération compte Tiktok:', user.email, error);
@@ -95,12 +95,13 @@ const updateCycle = async () => {
     console.groupEnd()
 };
 
-let secondstilNext6hr = 10 //(60 * 60 * 6) - (Math.floor((new Date()).valueOf() / 1000) % (60 * 60 * 6))
 
+/*
+let secondstilNext6hr = 10 //(60 * 60 * 6) - (Math.floor((new Date()).valueOf() / 1000) % (60 * 60 * 6))
 setTimeout(() => {
     console.log(" ---- regular update Start ---- ");
-    //updateCycle();
-   // interval = setInterval(updateCycle, 1000 * 60 * 10);
+   // updateCycle();
+   // interval = setInterval(updateCycle, 1000 * 60 * 60 * 6);
 }, secondstilNext6hr * 1000)
 
 
@@ -117,8 +118,7 @@ function wait(seconds) {
         }, seconds * 1000); // Wait for 2 seconds
     });
 }
-
-
+*/
 
 
 
