@@ -1,5 +1,5 @@
 //import { getDocs, query, updateDoc } from './localDatabase.js';
-import Tiktok from '@tobyg74/tiktok-api-dl'
+//import Tiktok from '@tobyg74/tiktok-api-dl'
 import { addDoc, getDoc, getDocs, updateDoc, uploadFile, getFileUrl, deleteFile } from './firestore.js';
 import e from 'express';
 import cors from "cors";
