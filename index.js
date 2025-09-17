@@ -13,7 +13,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const api = e();
-api.use(cors());
+api.use(cors({
+  allowedHeaders: "*",
+  origin: function (origin, callback) { // allow requests with no origin  // (like mobile apps or curl requests)
+    return callback(null, true);
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"]
+}));
 api.use(e.json());
 
 // Initialisation du compte
