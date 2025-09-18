@@ -307,7 +307,7 @@ api.get("/api/auth", async (req, res) => {
   url += '?client_key=' + CLIENT_KEY;
   url += '&scope=user.info.basic,video.list,user.info.profile,user.info.stats';
   url += '&response_type=code';
-  url += '&redirect_uri=' + encodeURIComponent(hostUrl + REDIRECT_URI);
+  url += '&redirect_uri=' + (hostUrl + REDIRECT_URI);
   url += '&state=' + csrfState + "--" + email;
 
   console.log("redirecting to", url)
