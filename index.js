@@ -164,21 +164,29 @@ const GetPostsStats = (posts) => {
 }
 
 
-api.post("/api/campaigns/files", async (req, res) => {
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Use the middleware in your route
+api.post("/api/campaigns/files", upload.array('files'), async (req, res) => {
   try {
     const { campaignid } = req.query;
     const uploadedFiles = [];
-    const file = req.files
-    const filePath = `campaigns/${campaignid}/${file.originalname}`;
-    const downloadURL = await uploadFile(file.buffer, filePath, file.mimetype);
 
-    uploadedFiles.push({
-      originalname: file.originalname,
-      filename: file.originalname,
-      path: filePath,
-      size: file.size,
-      downloadURL
-    });
+    // req.files is now populated by multer
+    for (const file of req.files) {
+      const filePath = `campaigns/${campaignid}/${file.originalname}`;
+      const downloadURL = await uploadFile(file.buffer, filePath, file.mimetype);
+
+      uploadedFiles.push({
+        originalname: file.originalname,
+        filename: file.originalname,
+        path: filePath,
+        size: file.size,
+        downloadURL
+      });
+    }
 
     console.log('Files uploaded to Firebase Storage');
     res.json({ ok: true, files: uploadedFiles });
@@ -406,7 +414,7 @@ api.get("/api/webhook", async (req, res) => {
         } else {
           res.redirect('/tiktoksuccess')
         }
-
+        
       } else {
         console.log(Tresponse.error, Tresponse.error_description)
         res.redirect('/tiktokfail')
