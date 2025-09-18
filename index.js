@@ -319,7 +319,7 @@ api.get("/api/auth", async (req, res) => {
 // Récupération des données de la campagne
 api.get("/api/webhook", async (req, res) => {
   const { code, scopes, state, error, error_description } = req.query;
-  let hostUrl = req.protocol + '://' + req.get('host');
+  let hostUrl = 'https://' + req.get('host');
 
   try {
     if (error) {
@@ -408,6 +408,7 @@ api.get("/api/webhook", async (req, res) => {
         } else {
           res.redirect('/tiktoksuccess')
         }
+        
       } else {
         console.log(Tresponse.error, Tresponse.error_description)
         res.redirect('/tiktokfail')
