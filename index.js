@@ -8,6 +8,7 @@ import path, { dirname } from 'path';
 import Tiktok from '@tobyg74/tiktok-api-dl'
 // server.js
 import axios from 'axios';
+import multer from 'multer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -164,7 +165,6 @@ const GetPostsStats = (posts) => {
 }
 
 
-const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
