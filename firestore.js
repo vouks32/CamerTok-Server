@@ -1,33 +1,34 @@
 import { initializeApp } from 'firebase/app';
-import { 
-  getFirestore, 
-  collection, 
-  doc, 
-  getDoc as getFirestoreDoc, 
-  getDocs as getFirestoreDocs, 
-  setDoc, 
-  updateDoc as updateFirestoreDoc,
-  query as firestoreQuery,
-  where,
-  orderBy,
-  limit
+import {
+    getFirestore,
+    collection,
+    doc,
+    getDoc as getFirestoreDoc,
+    getDocs as getFirestoreDocs,
+    setDoc,
+    updateDoc as updateFirestoreDoc,
+    query as firestoreQuery,
+    where,
+    orderBy,
+    limit
 } from 'firebase/firestore';
-import { 
-  getStorage, 
-  ref, 
-  uploadBytes, 
-  getDownloadURL, 
-  deleteObject 
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL,
+    deleteObject
 } from 'firebase/storage';
 
 // Configuration Firebase
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
 // Initialiser Firebase
@@ -71,7 +72,7 @@ const addDoc = async (collection_id, document_id, data) => {
 const updateDoc = async (collection_id, document_id, data) => {
     const docRef = doc(db, collection_id, document_id);
     const currentDoc = await getFirestoreDoc(docRef);
-    
+
     if (!currentDoc.exists()) {
         return false;
     }
@@ -91,7 +92,7 @@ const getDoc = async (collection_id, document_id) => {
 
 const getDocs = async (collection_id, query = null) => {
     let q = collection(db, collection_id);
-    
+
     if (query) {
         q = query.build(q);
     }
@@ -131,7 +132,7 @@ const query = () => {
 
     const build = (collectionRef) => {
         let q = collectionRef;
-        
+
         conditions.forEach(condition => {
             q = firestoreQuery(q, where(condition.field, condition.operator, condition.value));
         });
@@ -174,14 +175,14 @@ const deleteFile = async (filePath) => {
     await deleteObject(storageRef);
 }
 
-export { 
-    createCollection, 
-    addDoc, 
-    updateDoc, 
-    getDoc, 
-    getDocs, 
-    query, 
-    uploadFile, 
-    getFileUrl, 
-    deleteFile 
+export {
+    createCollection,
+    addDoc,
+    updateDoc,
+    getDoc,
+    getDocs,
+    query,
+    uploadFile,
+    getFileUrl,
+    deleteFile
 }

@@ -596,93 +596,111 @@ api.get('/api/shaku/users', async (req, res) => {
 
 
 api.listen(80, () => {
-    console.log(`Serveur joueur démarré sur le port 80`);
+  console.log(`Serveur joueur démarré sur le port 80`);
 });
 
 
 let interval
 
 const updateCycle = async () => {
-    //Manage Campaigns 
-    const campaigns = (await getDocs('campaigns')).docs;
-    for (let i = 0; i < campaigns.length; i++) {
-        let campaign = campaigns[i]
-        if (Date.now() >= (campaign.campaignInfo.endDate - 1000 * 60 * 60) && campaign.status === "active") {
-            campaign.status = 'ended'
+  //Manage Campaigns 
+  const campaigns = (await getDocs('campaigns')).docs;
+
+  /////////////////////////////   IF campaign enddate is past then end campaign
+  for (let i = 0; i < campaigns.length; i++) {
+    let campaign = campaigns[i]
+    if (Date.now() >= (campaign.campaignInfo.endDate - 1000 * 60 * 60) && campaign.status === "active") {
+      campaign.status = 'ended'
+    }
+  }
+
+  // Get users Videos stats
+  const users = await getDocs('users');
+  console.group("Updating stats for users =", users.docs.filter(u => u.userType === "creator").length)
+
+  let UpdatedUsersCount = 0
+
+  for (let i = 0; i < users.size && UpdatedUsersCount <= 10; i++) {
+    const user = users.docs[i]
+    ///   Skip users that has being checked this last 24hrs
+    if (user.userType !== "creator" || (user.lastCampaignsUpdatesDate && user.lastCampaignsUpdatesDate > (Date.now() - (60 * 60 * 24 * 1000)))) continue
+    UpdatedUsersCount += 1;
+    user.lastCampaignsUpdatesDate = Date.now()
+
+    let userVideos = []
+    try {
+      campaigns.forEach(c => {
+        const t = c.evolution.participatingCreators.find(
+          pc => pc.creator.email === user.email
+        )?.videos?.filter((vid) => vid.status === "active")?.map(vid => {
+          const v = { ...vid, campaignId: c.id }
+          return v
+        })
+        if (t)
+          userVideos = userVideos.concat(t)
+      })
+
+      userVideos.forEach(vid => {
+        if (vid.create_time < (Date.now() / 1000) - (60 * 60 * 24 * 14)) {
+          vid.status = "ended"
         }
+      })
+
+      console.log('--> getting data for', user.email, "videos", userVideos.length)
+
+      const updateUser = await (await fetch('https://campay-api.vercel.app/api/refresh_token?email=' + user?.email + '&refresh_token=' + user?.tiktokToken.refresh_token)).json()
+      const createResponse = await fetch('https://open.tiktokapis.com/v2/video/query/?fields=id,title,video_description,duration,cover_image_url,embed_link,view_count,like_count,comment_count,share_count,create_time', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + updateUser?.tiktokToken.access_token
+        },
+        body: JSON.stringify({ "filters": { "video_ids": userVideos.filter(v => v.status === "active").map(v => v.id) } })
+      });
+      const response = await createResponse.json()
+      const UpdatedVideos = response.data.videos;
+
+      console.log('--> setting data for', user.email, "videos", userVideos.length)
+
+      userVideos.forEach((uv) => {
+        if (uv.status !== "active") return
+
+        let temp = campaigns.find(c => c.id === uv.campaignId).evolution.participatingCreators.find(
+          pc => pc.creator.email === user.email
+        )?.videos?.find((vid) => vid.id === uv.id)
+        if (temp && UpdatedVideos.find(upV => upV.id === uv.id))
+          temp.history = temp?.history ?
+            temp?.history.concat([{
+              views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
+              likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
+              shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
+              comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
+              date: Date.now()
+            }])
+            :
+            [{
+              views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
+              likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
+              shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
+              comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
+              date: Date.now()
+            }]
+      })
+      //await wait(10)
+      console.log(" ---- Save USER ----- ")
+      await updateDoc('users', user.id, user)
+
+    } catch (error) {
+      console.error('Erreur récupération compte Tiktok:', user.email, error);
     }
+  }
 
-    // Get users Videos stats
-    const users = await getDocs('users');
-    console.group("Updating stats for users =", users.docs.filter(u => u.userType === "creator").length)
-
-    for (let i = 0; i < users.size; i++) {
-        const user = users.docs[i]
-        if (user.userType !== "creator") continue
-
-        let userVideos = []
-        try {
-            campaigns.forEach(c => {
-                const t = c.evolution.participatingCreators.find(
-                    pc => pc.creator.email === user.email
-                )?.videos?.filter((vid) => vid.status === "active")?.map(vid => {
-                    const v = { ...vid, campaignId: c.id }
-                    return v
-                })
-                if (t)
-                    userVideos = userVideos.concat(t)
-            })
-
-            console.log('getting data for', user.email, "videos", userVideos.length)
-
-            const updateUser = await (await fetch('https://campay-api.vercel.app/api/refresh_token?email=' + user?.email + '&refresh_token=' + user?.tiktokToken.refresh_token)).json()
-            const createResponse = await fetch('https://open.tiktokapis.com/v2/video/query/?fields=id,title,video_description,duration,cover_image_url,embed_link,view_count,like_count,comment_count,share_count,create_time', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + updateUser?.tiktokToken.access_token
-                },
-                body: JSON.stringify({ "filters": { "video_ids": userVideos.map(v => v.id) } })
-            });
-            const response = await createResponse.json()
-            const UpdatedVideos = response.data.videos;
-
-            console.log('setting data for', user.email, "videos", userVideos.length)
-
-            userVideos.forEach((uv) => {
-                let temp = campaigns.find(c => c.id === uv.campaignId).evolution.participatingCreators.find(
-                    pc => pc.creator.email === user.email
-                )?.videos?.find((vid) => vid.id === uv.id)
-                if (temp)
-                    temp.history = temp?.history ?
-                        temp?.history.concat([{
-                            views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
-                            likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
-                            shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
-                            comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
-                            date: Date.now()
-                        }])
-                        :
-                        [{
-                            views: UpdatedVideos.find(upV => upV.id === uv.id).view_count,
-                            likes: UpdatedVideos.find(upV => upV.id === uv.id).like_count,
-                            shares: UpdatedVideos.find(upV => upV.id === uv.id).share_count,
-                            comments: UpdatedVideos.find(upV => upV.id === uv.id).comment_count,
-                            date: Date.now()
-                        }]
-            })
-            //await wait(10)
-            console.log(" ---- ----- ")
-        } catch (error) {
-            console.error('Erreur récupération compte Tiktok:', user.email, error);
-        }
-    }
-
-    for (let i = 0; i < campaigns.length; i++) {
-        let campaign = campaigns[i]
-        await updateDoc('campaigns', campaign.id, campaign)
-    }
-    console.groupEnd()
+  console.log('--> Saving data in database')
+  for (let i = 0; i < campaigns.length; i++) {
+    let campaign = campaigns[i]
+    await updateDoc('campaigns', campaign.id, campaign)
+  }
+  console.groupEnd()
 };
 
 
