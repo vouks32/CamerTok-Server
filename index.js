@@ -271,7 +271,7 @@ api.get("/api/campaigndocs/:campaignid/:filename", async (req, res) => {
     const filePath = `campaigns/${campaignid}/${filename}`;
 
     const download = await getFileBuffer(filePath);
-    res.pipe(download);
+    res.send(download);
   } catch (error) {
     console.error('Erreur récupération du fichier:', req.params, error);
     res.status(500).json({ error: 'Échec récupération fichier' });
