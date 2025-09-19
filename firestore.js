@@ -12,13 +12,19 @@ import {
     orderBy,
     limit
 } from 'firebase/firestore';
-import {
-    getStorage,
-    ref,
-    uploadBytes,
-    getDownloadURL,
-    deleteObject
-} from 'firebase/storage';
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+const r2 = new S3Client({
+    region: "auto",
+    endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    credentials: {
+        accessKeyId: process.env.R2_ACCESS_KEY_ID,
+        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+    },
+});
+
+
 
 // Configuration Firebase
 const firebaseConfig = {
@@ -34,7 +40,6 @@ const firebaseConfig = {
 // Initialiser Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 /** Deep merge objects with nested objects */
 function deepMerge(target, source) {
@@ -158,22 +163,57 @@ const query = () => {
     return builder;
 }
 
-// Firebase Storage functions
+// Upload vers R2
 const uploadFile = async (fileBuffer, filePath, mimeType) => {
-    const storageRef = ref(storage, filePath);
-    await uploadBytes(storageRef, fileBuffer, { contentType: mimeType });
-    return await getDownloadURL(storageRef);
-}
+    await r2.send(new PutObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: filePath,
+        Body: fileBuffer,
+        ContentType: mimeType,
+    }));
 
+    // Générer une URL temporaire de 1h
+    const url = await getSignedUrl(r2, new GetObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: filePath,
+    }), { expiresIn: 3600 });
+
+    return url;
+};
+
+// Obtenir une URL de téléchargement temporaire
 const getFileUrl = async (filePath) => {
-    const storageRef = ref(storage, filePath);
-    return await getDownloadURL(storageRef);
-}
+    return await getSignedUrl(r2, new GetObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: filePath,
+    }), { expiresIn: 3600 });
+};
 
+// Retourne le contenu complet du fichier en Buffer
+const getFileBuffer = async (filePath) => {
+    const command = new GetObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: filePath,
+    });
+
+    const response = await r2.send(command);
+
+    // response.Body est un stream
+    const chunks = [];
+    for await (const chunk of response.Body) {
+        chunks.push(chunk);
+    }
+    return Buffer.concat(chunks); // retourne le fichier complet en Buffer
+};
+
+// Supprimer un fichier
 const deleteFile = async (filePath) => {
-    const storageRef = ref(storage, filePath);
-    await deleteObject(storageRef);
-}
+    await r2.send(new DeleteObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: filePath,
+    }));
+};
+
 
 export {
     createCollection,
@@ -184,5 +224,6 @@ export {
     query,
     uploadFile,
     getFileUrl,
+    getFileBuffer,
     deleteFile
 }

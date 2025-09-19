@@ -1,6 +1,6 @@
 //import { getDocs, query, updateDoc } from './localDatabase.js';
 //import Tiktok from '@tobyg74/tiktok-api-dl'
-import { addDoc, getDoc, getDocs, updateDoc, uploadFile, getFileUrl, deleteFile } from './firestore.js';
+import { addDoc, getDoc, getDocs, updateDoc, uploadFile, getFileUrl, deleteFile, getFileBuffer } from './firestore.js';
 import e from 'express';
 import cors from "cors";
 import { fileURLToPath } from 'url';
@@ -9,6 +9,7 @@ import Tiktok from '@tobyg74/tiktok-api-dl'
 // server.js
 import axios from 'axios';
 import multer from 'multer';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -269,8 +270,8 @@ api.get("/api/campaigndocs/:campaignid/:filename", async (req, res) => {
     const { campaignid, filename } = req.params;
     const filePath = `campaigns/${campaignid}/${filename}`;
 
-    const downloadURL = await getFileUrl(filePath);
-    res.redirect(downloadURL);
+    const download = await getFileBuffer(filePath);
+    res.pipe(download);
   } catch (error) {
     console.error('Erreur récupération du fichier:', req.params, error);
     res.status(500).json({ error: 'Échec récupération fichier' });
@@ -414,7 +415,7 @@ api.get("/api/webhook", async (req, res) => {
         } else {
           res.redirect('/tiktoksuccess')
         }
-        
+
       } else {
         console.log(Tresponse.error, Tresponse.error_description)
         res.redirect('/tiktokfail')
