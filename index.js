@@ -6,14 +6,14 @@ import cors from "cors";
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import Tiktok from '@tobyg74/tiktok-api-dl'
-import { initializeApp } from 'firebase-admin/app';
+import { cert, initializeApp } from 'firebase-admin/app';
 // server.js
 import axios from 'axios';
 import multer from 'multer';
-import { credential, messaging } from 'firebase-admin';
+import { messaging } from 'firebase-admin';
 
 initializeApp({
-  credential: credential.cert(require("./google-services.json")),
+  credential: cert(require("./google-services.json")),
 });
 
 
