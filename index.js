@@ -6,13 +6,14 @@ import cors from "cors";
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import Tiktok from '@tobyg74/tiktok-api-dl'
-import * as admin from 'firebase-admin'
+import { initializeApp } from 'firebase-admin/app';
 // server.js
 import axios from 'axios';
 import multer from 'multer';
+import { credential, messaging } from 'firebase-admin';
 
-admin.initializeApp({
-  credential: admin.credential.cert(require("./google-services.json")),
+initializeApp({
+  credential: credential.cert(require("./google-services.json")),
 });
 
 
@@ -317,15 +318,16 @@ api.post('/api/notification', async (req, res) => {
       token,
     };
 
-    admin.messaging().send(message)
+    messaging().send(message)
       .then((response) => {
         console.log("Successfully sent:", response);
       })
       .catch((error) => {
         console.error("Error sending:", error);
       });
+
     console.log("Création du compte COMPLÉTÉ AVEC SUCCES");
-    res.status(201).json(playerData);
+    res.status(201).json({ok : true});
   } catch (error) {
     console.error('ERREUR création compte:', error);
     res.status(500).json({ error: 'Échec création compte' });
