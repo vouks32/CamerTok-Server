@@ -12,7 +12,7 @@ import axios from 'axios';
 import multer from 'multer';
 import { getMessaging } from 'firebase-admin/messaging';
 
-import * as googleserveice from "./google-services.json" with { type: "json" };
+import * as googleserveice from "./creds-google.json" with { type: "json" };
 
 initializeApp({
   credential: cert(googleserveice),
