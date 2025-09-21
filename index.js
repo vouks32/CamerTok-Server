@@ -321,16 +321,10 @@ api.post('/api/notification', async (req, res) => {
       data,
       token,
     };
-    getMessaging().send(message)
-      .then((response) => {
-        console.log("Successfully sent:", response);
-      })
-      .catch((error) => {
-        console.error("Error sending:", error);
-      });
+    const response = await getMessaging().send(message)
 
-    console.log("Création du compte COMPLÉTÉ AVEC SUCCES");
-    res.status(201).json({ ok: true });
+    console.log("réponse de la notification ", response);
+    res.status(201).json({ ok: true, response });
   } catch (error) {
     console.error('ERREUR création compte:', error);
     res.status(500).json({ error: 'Échec création compte' });
