@@ -2,7 +2,7 @@
 
 # dependencies
 node_modules/
-
+.env
 api/uploads
 
 db
