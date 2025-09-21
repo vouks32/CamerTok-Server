@@ -310,20 +310,22 @@ api.delete("/api/campaigndocs/:campaignid/:filename", async (req, res) => {
 // Initialisation du compte
 api.post('/api/notification', async (req, res) => {
   try {
-    const { sender, receiver, body, title, data, token } = req.body;
+    const { sender, receiver, body, title, data, tokens } = req.body;
     console.log("-------------");
-    console.log("Envoie d'une notification from", sender, "to", receiver);
+    console.log("Envoie d'une notification from", sender.email, "to", receiver.email);
+
+    let responses = []
+
 
     const message = {
       notification: {
         title,
         body,
-
       },
       data,
-      token,
+      tokens,
     };
-    const response = await getMessaging().send(message)
+    const response = await getMessaging().sendEachForMulticast(message)
 
     console.log("réponse de la notification ", response);
     res.status(201).json({ ok: true, response });
