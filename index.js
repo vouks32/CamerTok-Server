@@ -12,10 +12,12 @@ import axios from 'axios';
 import multer from 'multer';
 import { getMessaging } from 'firebase-admin/messaging';
 
+const { privateKey } = JSON.parse(process.env.FIRESBASE_MESSAGING_PRIVATEKEY);
+
 initializeApp({
   credential: cert({
     projectId: process.env.FIRESBASE_MESSAGING_PROJECTID,
-    privateKey: process.env.FIRESBASE_MESSAGING_PRIVATEKEY,
+    privateKey,
     clientEmail: process.env.FIRESBASE_MESSAGING_CLIENTEMAIL,
   })
 });
