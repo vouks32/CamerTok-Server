@@ -14,6 +14,7 @@ import { getMessaging } from 'firebase-admin/messaging';
 
 import * as googleserveice from "./creds-google.json" with { type: "json" };
 
+
 initializeApp({
   credential: cert(googleserveice),
 });
