@@ -10,7 +10,7 @@ import { cert, initializeApp } from 'firebase-admin/app';
 // server.js
 import axios from 'axios';
 import multer from 'multer';
-import { messaging } from 'firebase-admin';
+import { getMessaging } from 'firebase-admin/messaging';
 
 initializeApp({
   credential: cert(require("./google-services.json")),
@@ -317,8 +317,7 @@ api.post('/api/notification', async (req, res) => {
       data,
       token,
     };
-
-    messaging().send(message)
+    getMessaging().send(message)
       .then((response) => {
         console.log("Successfully sent:", response);
       })
@@ -327,7 +326,7 @@ api.post('/api/notification', async (req, res) => {
       });
 
     console.log("Création du compte COMPLÉTÉ AVEC SUCCES");
-    res.status(201).json({ok : true});
+    res.status(201).json({ ok: true });
   } catch (error) {
     console.error('ERREUR création compte:', error);
     res.status(500).json({ error: 'Échec création compte' });
