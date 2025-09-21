@@ -6,9 +6,14 @@ import cors from "cors";
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import Tiktok from '@tobyg74/tiktok-api-dl'
+import * as admin from 'firebase-admin'
 // server.js
 import axios from 'axios';
 import multer from 'multer';
+
+admin.initializeApp({
+  credential: admin.credential.cert(require("./google-services.json")),
+});
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -292,6 +297,40 @@ api.delete("/api/campaigndocs/:campaignid/:filename", async (req, res) => {
   }
 });
 
+/////////////////////////////////////////      NOTIFICATION     ///////////////////////////////////
+
+
+// Initialisation du compte
+api.post('/api/notification', async (req, res) => {
+  try {
+    const { sender, receiver, body, title, data, token } = req.body;
+    console.log("-------------");
+    console.log("Envoie d'une notification from", sender, "to", receiver);
+
+    const message = {
+      notification: {
+        title,
+        body,
+
+      },
+      data,
+      token,
+    };
+
+    admin.messaging().send(message)
+      .then((response) => {
+        console.log("Successfully sent:", response);
+      })
+      .catch((error) => {
+        console.error("Error sending:", error);
+      });
+    console.log("Création du compte COMPLÉTÉ AVEC SUCCES");
+    res.status(201).json(playerData);
+  } catch (error) {
+    console.error('ERREUR création compte:', error);
+    res.status(500).json({ error: 'Échec création compte' });
+  }
+});
 
 /////////////////////////////////////////      TIKTOK   //////////////////////////////////////////
 

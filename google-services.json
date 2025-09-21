@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "355282374642",
+    "project_id": "community-8d9a2",
+    "storage_bucket": "community-8d9a2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355282374642:android:3a49896ffba9d68736256b",
+        "android_client_info": {
+          "package_name": "com.vouks.community"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwAKGFGgG-NEsvwWIVjWSZzKYrG25PetE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
