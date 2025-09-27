@@ -181,6 +181,18 @@ const uploadFile = async (fileBuffer, filePath, mimeType) => {
     return url;
 };
 
+
+
+// Upload vers R2
+const GetUploadLink = async (filePath) => {
+    const command = new PutObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: filePath
+    });
+
+    return await getSignedUrl(r2, command, { expiresIn: 3600 }); // 1 hour
+};
+
 // Obtenir une URL de téléchargement temporaire
 const getFileUrl = async (filePath) => {
     return await getSignedUrl(r2, new GetObjectCommand({
@@ -225,5 +237,6 @@ export {
     uploadFile,
     getFileUrl,
     getFileBuffer,
-    deleteFile
+    deleteFile,
+    GetUploadLink
 }

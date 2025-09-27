@@ -1,6 +1,6 @@
 //import { getDocs, query, updateDoc } from './localDatabase.js';
 //import Tiktok from '@tobyg74/tiktok-api-dl'
-import { addDoc, getDoc, getDocs, updateDoc, uploadFile, getFileUrl, deleteFile, getFileBuffer } from './firestore.js';
+import { addDoc, getDoc, getDocs, updateDoc, uploadFile, getFileUrl, deleteFile, getFileBuffer, GetUploadLink } from './firestore.js';
 import e from 'express';
 import cors from "cors";
 import { fileURLToPath } from 'url';
@@ -182,6 +182,23 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Use the middleware in your route
+api.get("/api/campaigns/files/geturl", async (req, res) => {
+  try {
+    const { campaignid, fileName } = req.query;
+
+    const filePath = `campaigns/${campaignid}/${fileName}`;
+    const uploadUrl = await GetUploadLink(filePath);
+
+    console.log('Link to upload to R2 ->', uploadUrl);
+    res.json({ success: true, url : uploadUrl, key : filePath, bucket: process.env.R2_PUBLIC_BUCKET });
+  } catch (error) {
+    console.error("Error Getting Link to Upload", error);
+    res.status(500).json({ success: false, error: error.message});
+  }
+});
+
+
+// Use the middleware in your route
 api.post("/api/campaigns/files", upload.array('files'), async (req, res) => {
   try {
     const { campaignid } = req.query;
@@ -310,28 +327,68 @@ api.delete("/api/campaigndocs/:campaignid/:filename", async (req, res) => {
 // Initialisation du compte
 api.post('/api/notification', async (req, res) => {
   try {
-    const { sender, receiver, body, title, data, tokens } = req.body;
+    const { sender, receivers, body, title, data, topic } = req.body;
     console.log("-------------");
-    console.log("Envoie d'une notification from", sender.email, "to", receiver.email);
+    console.log("Envoie d'une notification from", sender.email, "to", receivers?.map(u => u?.email));
 
-    let responses = []
+    let response = null
+
+    if (receivers) {
+
+      // Send emails
+
+      if (receivers.filter(u => u.notificationToken) && receivers.filter(u => u.notificationToken).length > 0) {
+        const message = {
+          notification: {
+            title,
+            body,
+          },
+          data,
+          tokens: receivers.filter(u => u.notificationToken)?.map(u => u.notificationToken),
+        };
+        response = await getMessaging().sendEachForMulticast(message)
+      }
+    } else if (topic) {
+
+      // get and send emails 
 
 
-    const message = {
-      notification: {
-        title,
-        body,
-      },
-      data,
-      tokens,
-    };
-    const response = await getMessaging().sendEachForMulticast(message)
+      const message = {
+        notification: {
+          title,
+          body,
+        },
+        data,
+        topic,
+      };
+      response = await getMessaging().send(message)
+    } else {
+      throw 'No one to send to'
+    }
 
     console.log("réponse de la notification ", response);
     res.status(201).json({ ok: true, response });
   } catch (error) {
     console.error('ERREUR création compte:', error);
-    res.status(500).json({ error: 'Échec création compte' });
+    res.status(500).json({ error });
+  }
+});
+
+
+// subsxribe to channel
+api.put('/api/notification/channel', async (req, res) => {
+  try {
+    const { topic, tokens } = req.body;
+    console.log("-------------");
+    console.log("Registering", tokens.length, "tokens to", topic);
+
+    const response = await getMessaging().subscribeToTopic(tokens, topic)
+
+    console.log("Registration completed ", response);
+    res.status(201).json({ ok: true, response });
+  } catch (error) {
+    console.error('ERREUR de l\'enregistrement des tokens', error);
+    res.status(500).json({ error: 'Échec de l\'enregistrement des tokens' });
   }
 });
 
@@ -571,6 +628,95 @@ api.get("/tiktoksuccess", async (req, res) => {
 api.get("/tiktokfail", async (req, res) => {
   res.sendFile(path.join(__dirname, 'tiktokfailure.html'));
 });
+
+
+//// //////     ------------------------------      DEVELOPEMENT ROUTES
+/*
+
+// Ensure uploads folder exists
+const UPLOAD_DIR = path.join(__dirname, "uploads");
+
+if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+
+// Configure storage_dev with multer
+const storage_dev = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const campaignFolder = path.join(UPLOAD_DIR, req.query.campaignid);
+    if (!fs.existsSync(campaignFolder)) fs.mkdirSync(campaignFolder, { recursive: true });
+    cb(null, campaignFolder);
+  },
+  filename: function (req, file, cb) {
+    // Keep original filename but prefix with timestamp to avoid collisions
+    const safeName = file.originalname.replace(/\s+/g, "_");
+    //cb(null, `${Date.now()}-${safeName}`);
+    cb(null, file.originalname);
+  },
+});
+
+// Accept multiple files under the field name 'files'
+const upload_dev = multer({
+  storage_dev,
+  limits: {
+    fileSize: 1024 * 1024 * 1024, // 1 GB limit (adjust to your needs)
+  },
+}).array("files", 20); // accept up to 20 files per request
+
+api.post("/api/campaigns/files", (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      console.error("Upload error:", err);
+      return res.status(500).json({ ok: false, error: err.message });
+    }
+    console.log('file uploaded ->', req.files[0].filename)
+
+    // req.files is an array with file info saved locally
+    const saved = (req.files || []).map((f) => ({
+      originalname: f.originalname,
+      filename: f.filename,
+      path: f.path,
+      size: f.size,
+    }));
+    res.json({ ok: true, files: saved });
+  });
+});
+
+
+api.post("/api/campaigns/data", async (req, res) => {
+  try {
+    const campaign = req.body;
+
+    if (campaign.action && campaign.action === "delete") {
+
+      console.log("-------------");
+      console.log("suppression de la campagne", campaign.campaignId);
+      const updated = await updateDoc('campaigns', campaign.campaignId, { deleted: true })
+      console.log("suppression de la campaign COMPLÉTÉ AVEC SUCCES");
+      res.status(201).json({ deleted: true, update: updated });
+      return
+    }
+
+    console.log("-------------");
+    console.log("Création de la campagne", campaign.id);
+
+    const playerData = {
+      ...campaign,
+      lastUpdated: Date.now()
+    };
+
+    await addDoc('campaigns', campaign.id, campaign)
+    console.log("Création de la campaign COMPLÉTÉ AVEC SUCCES");
+    res.status(201).json(campaign);
+  } catch (error) {
+    console.error('ERREUR création de la campagne:', error);
+    res.status(500).json({ error: 'Échec création campagne' });
+  }
+});
+
+
+*/
+
+
+
 
 
 
