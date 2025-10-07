@@ -113,12 +113,14 @@ const getDocs = async (collection_id, query = null) => {
     };
 }
 
+// Construct a query with where, limit, and orderBy
 const query = () => {
     const conditions = [];
     let limitCount = null;
     let orderByField = null;
     let orderDirection = 'asc';
 
+    // Methods to add conditions
     const where = (field, operator, value) => {
         conditions.push({ field, operator, value });
         return builder;

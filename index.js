@@ -1,6 +1,6 @@
 //import { getDocs, query, updateDoc } from './localDatabase.js';
 //import Tiktok from '@tobyg74/tiktok-api-dl'
-import { addDoc, getDoc, getDocs, updateDoc, uploadFile, getFileUrl, deleteFile, getFileBuffer, GetUploadLink } from './firestore.js';
+import { addDoc, getDoc, getDocs, updateDoc, uploadFile, getFileUrl, deleteFile, getFileBuffer, GetUploadLink, query } from './firestore.js';
 import e from 'express';
 import cors from "cors";
 import { fileURLToPath } from 'url';
@@ -190,10 +190,10 @@ api.get("/api/campaigns/files/geturl", async (req, res) => {
     const uploadUrl = await GetUploadLink(filePath);
 
     console.log('Link to upload to R2 ->', uploadUrl);
-    res.json({ success: true, url : uploadUrl, key : filePath, bucket: process.env.R2_PUBLIC_BUCKET });
+    res.json({ success: true, url: uploadUrl, key: filePath, bucket: process.env.R2_PUBLIC_BUCKET });
   } catch (error) {
     console.error("Error Getting Link to Upload", error);
-    res.status(500).json({ success: false, error: error.message});
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
@@ -611,6 +611,14 @@ api.get("/api/refresh_token", async (req, res) => {
   }
 });
 
+// Récupération des données de la campagne
+api.get("/api/refresh_data", async (req, res) => {
+  console.log("-------------");
+  await updateCycle()
+  console.log("-------------");
+  res.json({ ok: true });
+});
+
 
 /////// //get requests to the root ("/") will route here
 api.get('/yo', async (req, res) => {
@@ -798,9 +806,12 @@ api.listen(80, () => {
 
 let interval
 
-const updateCycle = async () => {
+async function updateCycle() {
   //Manage Campaigns 
-  const campaigns = (await getDocs('campaigns')).docs;
+
+  const ReloadInterval = 1000 * 60 * 60 * 6 // 6hrs
+
+  const campaigns = (await getDocs('campaigns', query().where('status', "!=", "ended"))).docs;
 
   /////////////////////////////   IF campaign enddate is past then end campaign
   for (let i = 0; i < campaigns.length; i++) {
@@ -812,20 +823,20 @@ const updateCycle = async () => {
 
   // Get users Videos stats
   const users = await getDocs('users');
-  console.group("Updating stats for users =", users.docs.filter(u => u.userType === "creator").length)
+  console.group("Updating stats for users left =", users.docs.filter(u => u.userType === "creator" && (!u.lastCampaignsUpdatesDate || u.lastCampaignsUpdatesDate < Date.now() - ReloadInterval)).length)
 
   let UpdatedUsersCount = 0
 
-  for (let i = 0; i < users.size && UpdatedUsersCount <= 10; i++) {
+  for (let i = 0; i < users.size && UpdatedUsersCount < 5; i++) {
     const user = users.docs[i]
     ///   Skip users that has being checked this last 24hrs
-    if (user.userType !== "creator" || (user.lastCampaignsUpdatesDate && user.lastCampaignsUpdatesDate > (Date.now() - (60 * 60 * 24 * 1000)))) continue
+    if (user.userType !== "creator" || (user.lastCampaignsUpdatesDate && user.lastCampaignsUpdatesDate > (Date.now() - ReloadInterval))) continue
     UpdatedUsersCount += 1;
     user.lastCampaignsUpdatesDate = Date.now()
 
     let userVideos = []
     try {
-      campaigns.forEach(c => {
+      campaigns.filter(c => c.status === "active").forEach(c => {
         const t = c.evolution.participatingCreators.find(
           pc => pc.creator.email === user.email
         )?.videos?.filter((vid) => vid.status === "active")?.map(vid => {
@@ -842,7 +853,7 @@ const updateCycle = async () => {
         }
       })
 
-      console.log('--> getting data for', user.email, "videos", userVideos.length)
+      console.log('--> getting data for', user.email, "videos", userVideos.filter(v => v.status === "active").length)
 
       const updateUser = await (await fetch('https://campay-api.vercel.app/api/refresh_token?email=' + user?.email + '&refresh_token=' + user?.tiktokToken.refresh_token)).json()
       const createResponse = await fetch('https://open.tiktokapis.com/v2/video/query/?fields=id,title,video_description,duration,cover_image_url,embed_link,view_count,like_count,comment_count,share_count,create_time', {
@@ -856,7 +867,7 @@ const updateCycle = async () => {
       const response = await createResponse.json()
       const UpdatedVideos = response.data.videos;
 
-      console.log('--> setting data for', user.email, "videos", userVideos.length)
+      console.log('--> setting data for', user.email, "videos", userVideos.filter(v => v.status === "active").length)
 
       userVideos.forEach((uv) => {
         if (uv.status !== "active") return
@@ -864,6 +875,7 @@ const updateCycle = async () => {
         let temp = campaigns.find(c => c.id === uv.campaignId).evolution.participatingCreators.find(
           pc => pc.creator.email === user.email
         )?.videos?.find((vid) => vid.id === uv.id)
+
         if (temp && UpdatedVideos.find(upV => upV.id === uv.id))
           temp.history = temp?.history ?
             temp?.history.concat([{
