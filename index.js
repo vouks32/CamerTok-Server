@@ -438,20 +438,8 @@ api.get("/api/webhook", async (req, res) => {
       const userMail = state.split('--')[1]
       console.log(code, state)
 
-      //// Save Auth_code
-      const createResponse = await fetch(hostUrl + '/api/users', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          "skip_zrok_interstitial": "true"
-        },
-        body: JSON.stringify({
-          email: userMail,
-          updates: { tiktokAuthCode }
-        })
-      });
+      const updatedUser = await updateDoc('users', userMail, { tiktokAuthCode, lastUpdated: Date.now(), lastConnected: Date.now() })
 
-      let updatedUser = await createResponse.json();
       if (updatedUser.error) {
         console.log("error saving code", updatedUser.error)
       }
@@ -482,32 +470,25 @@ api.get("/api/webhook", async (req, res) => {
             'Authorization': 'Bearer ' + Tresponse.access_token
           }
         });
-        const Profil = (await ProfilResponse.json()).data.user
-
+        const Profil = (await ProfilResponse.json()).data?.user
+        if (!Profil) {
+          console.log("error getting profil", ProfilResponse)
+          res.redirect('/tiktokfail')
+          return
+        }
         // Save Token+tiktokProfil
-        const updateResponse = await fetch(hostUrl + '/api/users', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            "skip_zrok_interstitial": "true"
+        const updatedUser = await updateDoc('users', userMail, {
+          tiktokUser: {
+            ...Profil,
+            date: Math.round(Date.now() / 1000),
           },
-          body: JSON.stringify({
-            email: userMail,
-            updates: {
-              tiktokUser: {
-                ...Profil,
-                date: Math.round(Date.now() / 1000),
-              },
-              tiktokToken: {
-                ...Tresponse,
-                access_token_date: Math.round(Date.now() / 1000),
-                refresh_token_date: Math.round(Date.now() / 1000)
-              }
-            }
-          })
-        });
+          tiktokToken: {
+            ...Tresponse,
+            access_token_date: Math.round(Date.now() / 1000),
+            refresh_token_date: Math.round(Date.now() / 1000)
+          }
+        })
 
-        let updatedUser = await updateResponse.json();
         if (updatedUser.error) {
           console.log("error saving Token", updatedUser.error)
           res.redirect('/tiktokfail')
@@ -562,35 +543,30 @@ api.get("/api/refresh_token", async (req, res) => {
           }
         });
         const Profil = (await ProfilResponse.json()).data.user
-
-        // Save Token+tiktokProfil
-        const updateResponse = await fetch(hostUrl + '/api/users', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            "skip_zrok_interstitial": "true"
-          },
-          body: JSON.stringify({
-            email: userMail,
-            updates: {
-              tiktokUser: {
-                ...Profil,
-                "followerCount": Profil.follower_count,
-                "followingCount": Profil.following_count,
-                "heartCount": Profil.likes_count,
-                "videoCount": Profil.video_count,
-                date: Math.round(Date.now() / 1000),
-              },
-              tiktokToken: {
-                ...Tresponse,
-                access_token_date: Math.round(Date.now() / 1000),
-                refresh_token_date: Math.round(Date.now() / 1000)
-              }
+        if (!Profil) {
+          console.log("error getting profil", ProfilResponse)
+          res.status(500).json({ success: false })
+          return
+        }
+        const updatedUser = await updateDoc('users', userMail,
+          {
+            tiktokUser: {
+              ...Profil,
+              "followerCount": Profil.follower_count,
+              "followingCount": Profil.following_count,
+              "heartCount": Profil.likes_count,
+              "videoCount": Profil.video_count,
+              date: Math.round(Date.now() / 1000),
+              readable_date: new Date().toLocaleDateString()
+            },
+            tiktokToken: {
+              ...Tresponse,
+              access_token_date: Math.round(Date.now() / 1000),
+              refresh_token_date: Math.round(Date.now() / 1000)
             }
-          })
-        });
+          }
+        )
 
-        let updatedUser = await updateResponse.json();
         if (updatedUser.error) {
           console.log("error saving Token", updatedUser.error)
           res.status(500).json({ success: false })

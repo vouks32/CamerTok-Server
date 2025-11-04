@@ -210,7 +210,7 @@ const getFileBuffer = async (filePath) => {
         Key: filePath,
     });
 
-    const response = await r2.send(command);
+    const response = await r2.send(command); 
 
     // response.Body est un stream
     const chunks = [];
